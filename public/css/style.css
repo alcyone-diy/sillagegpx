@@ -82,6 +82,7 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-glass);
+  transform: translateZ(0);
 }
 
 .glass-card {
@@ -93,6 +94,7 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-glass);
   padding: 1.5rem;
   transition: var(--transition);
+  transform: translateZ(0);
 }
 
 .glass-card h3 {
