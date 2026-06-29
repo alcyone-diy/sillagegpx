@@ -6,12 +6,31 @@ class Translator {
     private static string $lang = 'en';
 
     public static function init() {
+        // 1. User explicitly chooses a language via URL
         if (isset($_GET['lang']) && in_array($_GET['lang'], ['en', 'fr'])) {
-            $_SESSION['lang'] = $_GET['lang'];
-            // Remove lang from url to avoid preserving it in future requests (optional)
+            $lang = $_GET['lang'];
+            // Save choice in cookie (1 year)
+            setcookie('lang', $lang, time() + 31536000, '/');
+            $_SESSION['lang'] = $lang;
+        } 
+        // 2. User has a saved preference in cookie
+        elseif (isset($_COOKIE['lang']) && in_array($_COOKIE['lang'], ['en', 'fr'])) {
+            $lang = $_COOKIE['lang'];
+            $_SESSION['lang'] = $lang;
+        }
+        // 3. Auto-detect from browser settings
+        elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            $lang = in_array($lang, ['en', 'fr']) ? $lang : 'en';
+            $_SESSION['lang'] = $lang;
+        } 
+        // 4. Default fallback
+        else {
+            $lang = 'en';
+            $_SESSION['lang'] = $lang;
         }
 
-        self::$lang = $_SESSION['lang'] ?? 'en';
+        self::$lang = $lang;
         $file = SRC_PATH . '/Lang/' . self::$lang . '.php';
         
         if (file_exists($file)) {
