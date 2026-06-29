@@ -14,3 +14,6 @@ public/uploads/processed/*
 
 public/error_log
 data
+
+# Local configuration overrides (secrets, API keys)
+src/config.local.php

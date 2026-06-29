@@ -8,6 +8,8 @@ return [
     'login' => 'Connexion',
     'language' => 'Langue',
     'admin' => 'Administration',
+    'about' => 'À propos',
+    'contact_us' => 'Nous contacter',
     
     // Home
     'home_title' => 'Votre Journal de Bord Numérique',

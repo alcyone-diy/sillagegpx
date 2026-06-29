@@ -8,6 +8,8 @@ return [
     'login' => 'Login',
     'language' => 'Language',
     'admin' => 'Administration',
+    'about' => 'About',
+    'contact_us' => 'Contact Us',
     
     // Home
     'home_title' => 'Your Digital Logbook',

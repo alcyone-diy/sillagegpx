@@ -92,9 +92,42 @@ if ($route === '' || $route === 'home') {
 } elseif ($route === 'api/track') {
     $controller = new \App\Controllers\TripController();
     $controller->apiTrackData();
+} elseif ($route === 'api/reveal_email') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        exit;
+    }
+    $turnstileResponse = $_POST['cf-turnstile-response'] ?? '';
+    if (empty($turnstileResponse) || empty(TURNSTILE_SECRET_KEY)) {
+        http_response_code(400);
+        exit;
+    }
+
+    $ch = curl_init('https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'secret' => TURNSTILE_SECRET_KEY,
+        'response' => $turnstileResponse,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    ]));
+    $verifyResponse = curl_exec($ch);
+    curl_close($ch);
+
+    $responseData = json_decode($verifyResponse);
+    if ($responseData && $responseData->success) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'email' => defined('ADMIN_EMAIL') ? ADMIN_EMAIL : 'alcyone-diy@gmail.com']);
+    } else {
+        http_response_code(403);
+        echo json_encode(['success' => false]);
+    }
+    exit;
 } elseif ($route === 'admin') {
     $controller = new \App\Controllers\AdminController();
     $controller->showAdmin();
+} elseif ($route === 'about') {
+    require SRC_PATH . '/Views/about.php';
 } else {
     http_response_code(404);
     echo "Page not found (404): " . htmlspecialchars($route);

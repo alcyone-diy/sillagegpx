@@ -25,3 +25,12 @@ define('MAP_POINT_INTERVAL', 60);   // 1 minute for map rendering points
 // If the site is at the root of the domain, leave empty or '/'
 // If the site is in a subfolder not managed by a VirtualHost, define e.g.: '/journaldebord'
 define('BASE_URL', '/gpx'); 
+
+// Load local configuration overrides (secrets, API keys) if available
+if (file_exists(__DIR__ . '/config.local.php')) {
+    require_once __DIR__ . '/config.local.php';
+}
+
+// Cloudflare Turnstile (Fallbacks if not defined in config.local.php)
+if (!defined('TURNSTILE_SITE_KEY')) define('TURNSTILE_SITE_KEY', '');
+if (!defined('TURNSTILE_SECRET_KEY')) define('TURNSTILE_SECRET_KEY', '');

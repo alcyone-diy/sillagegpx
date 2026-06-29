@@ -34,6 +34,11 @@ ob_start();
                 <label for="reg_password"><?= __('password') ?></label>
                 <input type="password" id="reg_password" name="password" required class="form-control glass-input">
             </div>
+            <?php if (defined('TURNSTILE_SITE_KEY') && TURNSTILE_SITE_KEY !== ''): ?>
+            <div class="form-group">
+                <div class="cf-turnstile" data-sitekey="<?= htmlspecialchars(TURNSTILE_SITE_KEY) ?>" data-theme="light"></div>
+            </div>
+            <?php endif; ?>
             <button type="submit" name="register" class="btn btn-primary btn-block"><?= __('create_account') ?></button>
         </form>
     </div>

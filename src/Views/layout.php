@@ -12,6 +12,11 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     
+    <?php if (defined('TURNSTILE_SITE_KEY') && TURNSTILE_SITE_KEY !== ''): ?>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <?php endif; ?>
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     
@@ -101,7 +106,10 @@
     </main>
 
     <footer class="footer">
-        <p>&copy; <?= date('Y') ?> SillageGPX.</p>
+        <p>
+            &copy; <?= date('Y') ?> SillageGPX. 
+            <a href="?route=about" style="color: inherit; text-decoration: underline; margin-left: 0.5rem;"><?= __('about') ?></a>
+        </p>
     </footer>
 
     <!-- Scripts -->
