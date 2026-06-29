@@ -70,10 +70,11 @@
                             <span class="hide-on-mobile"><?= htmlspecialchars($_SESSION['username']) ?></span>
                         </button>
                         <div class="dropdown-menu glass" style="min-width: 150px; right: 0;">
+                            <a href="?route=profile" class="dropdown-item">👤 Mon Profil</a>
                             <?php if ((int)$_SESSION['user_id'] === 1): ?>
                                 <a href="?route=admin" class="dropdown-item" style="color: var(--warning);">🛠️ <?= __('admin') ?></a>
-                                <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 0.5rem 0;"></div>
                             <?php endif; ?>
+                            <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 0.5rem 0;"></div>
                             <a href="?route=logout" class="dropdown-item" style="color: var(--error);"><?= __('logout') ?></a>
                         </div>
                     </div>

@@ -124,6 +124,14 @@ if ($route === '' || $route === 'home') {
     }
     exit;
 } elseif (strpos($route, 'api/passkey/') === 0) {
+    if ($route === 'api/passkey/delete') {
+        $controller = new \App\Controllers\ProfileController();
+        if ($method === 'POST') {
+            $controller->deletePasskey();
+        }
+        exit;
+    }
+
     $controller = new \App\Controllers\PasskeyController();
     if ($route === 'api/passkey/register/challenge') {
         $controller->apiRegisterChallenge();
@@ -136,6 +144,13 @@ if ($route === '' || $route === 'home') {
     } else {
         http_response_code(404);
         exit;
+    }
+} elseif ($route === 'profile') {
+    $controller = new \App\Controllers\ProfileController();
+    if ($method === 'POST') {
+        $controller->updateProfile();
+    } else {
+        $controller->showProfile();
     }
 } elseif ($route === 'admin') {
     $controller = new \App\Controllers\AdminController();

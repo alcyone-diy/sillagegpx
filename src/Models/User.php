@@ -60,4 +60,18 @@ class User {
             return null;
         }
     }
+
+    public function update(string $username, string $passwordHash): bool {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare('UPDATE users SET username = :username, password_hash = :password_hash WHERE id = :id');
+        try {
+            return $stmt->execute([
+                'username' => $username,
+                'password_hash' => $passwordHash,
+                'id' => $this->id
+            ]);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
 }
