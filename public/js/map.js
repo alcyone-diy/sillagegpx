@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dayKey === 'all') {
             days.forEach((dKey, idx) => {
                 const color = palette[idx % palette.length];
-                datasetsMap[dKey] = { label: `Day ${idx+1}`, color };
+                datasetsMap[dKey] = { label: `${window.TRIP_LANG.day || 'Day'} ${idx+1}`, color };
                 tracksByDay[dKey].forEach(trackInfo => {
                     tracksToRender.push({ trackInfo, color, datasetKey: dKey });
                 });
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const idx = days.indexOf(dayKey);
             const color = palette[idx % palette.length] || palette[0];
-            datasetsMap[dayKey] = { label: `Day ${idx+1}`, color };
+            datasetsMap[dayKey] = { label: `${window.TRIP_LANG.day || 'Day'} ${idx+1}`, color };
             (tracksByDay[dayKey] || []).forEach(trackInfo => {
                 tracksToRender.push({ trackInfo, color, datasetKey: dayKey });
             });
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).addTo(map);
 
                 const dayIndex = days.indexOf(item.datasetKey);
-                pline.bindTooltip(`<strong>Day ${dayIndex + 1}</strong>`, { sticky: true });
+                pline.bindTooltip(`<strong>${window.TRIP_LANG.day || 'Day'} ${dayIndex + 1}</strong>`, { sticky: true });
                 
                 pline.on('click', () => {
                     const el = document.getElementById(`step-li-${item.datasetKey}`);
@@ -138,19 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('globalStats').innerHTML = `
             <div class="stat-box">
                 <span class="stat-value">${distanceNm} NM</span>
-                <span class="stat-label">Distance</span>
+                <span class="stat-label">${window.TRIP_LANG.distance || 'Distance'}</span>
             </div>
             <div class="stat-box">
                 <span class="stat-value">${durationHours} h</span>
-                <span class="stat-label">Duration</span>
+                <span class="stat-label">${window.TRIP_LANG.duration || 'Duration'}</span>
             </div>
             <div class="stat-box">
                 <span class="stat-value">${avgSpeed} kts</span>
-                <span class="stat-label">Avg Speed</span>
+                <span class="stat-label">${window.TRIP_LANG.avgSpeed || 'Avg Speed'}</span>
             </div>
             <div class="stat-box">
                 <span class="stat-value">${stats.maxSpeed.toFixed(1)} kts</span>
-                <span class="stat-label">Max Speed</span>
+                <span class="stat-label">${window.TRIP_LANG.maxSpeed || 'Max Speed'}</span>
             </div>
         `;
 
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const overviewLi = document.createElement('li');
         overviewLi.className = 'step-item active';
         overviewLi.style.cursor = 'pointer';
-        overviewLi.innerHTML = `<strong>Trip Overview</strong><br><small class="text-muted">${days.length} Days</small>`;
+        overviewLi.innerHTML = `<strong>${window.TRIP_LANG.overview || 'Trip Overview'}</strong><br><small class="text-muted">${days.length} ${window.TRIP_LANG.days || 'Days'}</small>`;
         overviewLi.addEventListener('click', () => {
             document.querySelectorAll('.step-item').forEach(el => {
                 el.classList.remove('active');
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set a left border color to match the chart/map
             li.style.borderLeft = `4px solid rgb(${colorRgb})`;
             
-            li.innerHTML = `<strong>Day ${index + 1}</strong><br><small class="text-muted">${formattedDate}</small>`;
+            li.innerHTML = `<strong>${window.TRIP_LANG.day || 'Day'} ${index + 1}</strong><br><small class="text-muted">${formattedDate}</small>`;
             li.addEventListener('click', () => {
                 document.querySelectorAll('.step-item').forEach(el => {
                     el.classList.remove('active');

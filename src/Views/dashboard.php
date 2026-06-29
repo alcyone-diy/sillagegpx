@@ -1,19 +1,19 @@
 <?php
-$pageTitle = 'Dashboard - SillageGPX';
+$pageTitle = __('dashboard') . ' - ' . __('site_title');
 ob_start();
 ?>
 
 <div class="dashboard-header">
-    <h2>Your Logbook</h2>
-    <a href="?route=create_trip" class="btn btn-primary">+ Log New Trip</a>
+    <h2><?= __('your_logbook') ?></h2>
+    <a href="?route=create_trip" class="btn btn-primary"><?= __('log_new_trip') ?></a>
 </div>
 
 <?php if (empty($trips)): ?>
     <div class="empty-state glass-card">
         <div class="empty-icon">🌊</div>
-        <h3>No trips logged yet</h3>
-        <p>Start recording your adventures on the water by creating your first trip and uploading a GPX file.</p>
-        <a href="?route=create_trip" class="btn btn-primary mt-4">Log your first trip</a>
+        <h3><?= __('no_trips') ?></h3>
+        <p><?= __('no_trips_desc') ?></p>
+        <a href="?route=create_trip" class="btn btn-primary mt-4"><?= __('log_first_trip') ?></a>
     </div>
 <?php else: ?>
     <div class="trips-grid">
@@ -26,17 +26,17 @@ ob_start();
                 
                 <div class="trip-card-body" style="margin-top: 1rem;">
                     <?php if ($trip->boat_name): ?>
-                        <p class="text-sm"><strong>Boat:</strong> <?= htmlspecialchars($trip->boat_name) ?></p>
+                        <p class="text-sm"><strong><?= __('boat') ?>:</strong> <?= htmlspecialchars($trip->boat_name) ?></p>
                     <?php endif; ?>
                     
                     <?php if ($trip->start_date): ?>
-                        <p class="text-sm"><strong>Date:</strong> <?= htmlspecialchars($trip->start_date) ?> 
-                        <?php if ($trip->end_date && $trip->end_date != $trip->start_date) echo ' to ' . htmlspecialchars($trip->end_date); ?>
+                        <p class="text-sm"><strong><?= __('date') ?>:</strong> <?= htmlspecialchars($trip->start_date) ?> 
+                        <?php if ($trip->end_date && $trip->end_date != $trip->start_date) echo ' ' . __('to') . ' ' . htmlspecialchars($trip->end_date); ?>
                         </p>
                     <?php endif; ?>
                     
                     <div class="trip-stats text-muted text-sm mt-2">
-                        <span>👁️ <?= $trip->views_count ?> views</span>
+                        <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span>
                     </div>
                 </div>
             </div>

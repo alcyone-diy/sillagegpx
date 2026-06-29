@@ -25,7 +25,7 @@ class AuthController {
             header('Location: ?route=dashboard');
             exit;
         } else {
-            $error = "Invalid username or password.";
+            $error = __('invalid_credentials');
             require SRC_PATH . '/Views/login.php';
         }
     }
@@ -36,7 +36,7 @@ class AuthController {
         $password = $_POST['password'] ?? '';
         
         if (empty($username) || empty($email) || empty($password)) {
-            $error = "All fields are required.";
+            $error = __('fields_required');
             require SRC_PATH . '/Views/login.php';
             return;
         }
@@ -49,7 +49,7 @@ class AuthController {
             header('Location: ?route=dashboard');
             exit;
         } else {
-            $error = "Username or email already exists.";
+            $error = __('user_exists');
             require SRC_PATH . '/Views/login.php';
         }
     }

@@ -13,7 +13,7 @@ ob_start();
             <?php if ($trip->start_date): ?>
                 <span>📅 <?= htmlspecialchars($trip->start_date) ?></span> &bull; 
             <?php endif; ?>
-            <span>👁️ <?= $trip->views_count ?> views</span>
+            <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span>
         </div>
         
         <?php if ($trip->comment): ?>
@@ -27,12 +27,12 @@ ob_start();
         <div class="trip-owner-actions">
             <div class="d-flex" style="gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
                 <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars($trip->visibility) ?></span>
-                <a href="?route=edit_trip&id=<?= $trip->id ?>" class="btn btn-outline btn-sm">Edit Trip</a>
+                <a href="?route=edit_trip&id=<?= $trip->id ?>" class="btn btn-outline btn-sm"><?= __('edit_trip') ?></a>
             </div>
             <?php if ($trip->visibility === 'unlisted'): ?>
                 <div class="share-link-box">
-                    <button class="btn btn-outline btn-sm" id="copyBtn" data-token="<?= htmlspecialchars($trip->unlisted_token) ?>" onclick="copyShareUrl()">Copy Link</button>
-                    <button class="btn btn-outline btn-sm" onclick="regenerateToken(<?= $trip->id ?>)" title="Generate new link">Regenerate</button>
+                    <button class="btn btn-outline btn-sm" id="copyBtn" data-token="<?= htmlspecialchars($trip->unlisted_token) ?>" onclick="copyShareUrl()"><?= __('copy_link') ?></button>
+                    <button class="btn btn-outline btn-sm" onclick="regenerateToken(<?= $trip->id ?>)" title="Generate new link"><?= __('regenerate') ?></button>
                 </div>
             <?php endif; ?>
         </div>
@@ -43,17 +43,26 @@ ob_start();
 
 <?php if (empty($tracksData)): ?>
     <div class="empty-state glass-card mt-4">
-        <p>No GPX tracks available for this trip yet.</p>
+        <p><?= __('no_tracks') ?></p>
     </div>
 <?php else: ?>
     <!-- Pass tracks data to JS securely -->
     <script>
         window.TRIP_DATA = <?= json_encode($tracksData) ?>;
+        window.TRIP_LANG = {
+            distance: "<?= __('distance') ?>",
+            duration: "<?= __('duration') ?>",
+            avgSpeed: "<?= __('avg_speed') ?>",
+            maxSpeed: "<?= __('max_speed') ?>",
+            overview: "<?= __('trip_overview') ?>",
+            days: "<?= __('days') ?>",
+            day: "<?= __('day') ?>"
+        };
     </script>
     
     <?php if (count($tracksData) > 1): ?>
         <div class="steps-panel glass-card mt-4 mb-4">
-            <h3>Navigation Days</h3>
+            <h3><?= __('nav_days') ?></h3>
             <ul class="steps-list d-flex flex-row" id="stepsList" style="display: flex; gap: 1rem; flex-wrap: wrap; list-style: none;">
                 <!-- Populated by JS -->
             </ul>
@@ -61,7 +70,7 @@ ob_start();
     <?php endif; ?>
 
     <div class="stats-panel glass-card mb-4 mt-4">
-        <h3>Trip Statistics</h3>
+        <h3><?= __('trip_stats') ?></h3>
         <div id="globalStats" class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <!-- Populated by JS -->
         </div>
@@ -72,7 +81,7 @@ ob_start();
     </div>
     
     <div class="chart-panel glass-card mb-4">
-        <h3>Speed Profile</h3>
+        <h3><?= __('speed_profile') ?></h3>
         <div class="chart-wrapper">
             <canvas id="speedChart"></canvas>
         </div>

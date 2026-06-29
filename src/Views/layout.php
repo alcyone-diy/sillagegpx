@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= htmlspecialchars(\App\Utils\Translator::getCurrentLang()) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +23,20 @@
             <a href="?route=home" class="logo">⛵ Sillage<span>GPX</span></a>
             <div class="nav-links">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="?route=dashboard" class="nav-link">Dashboard</a>
-                    <a href="?route=create_trip" class="nav-link btn-primary-sm">+ New Trip</a>
-                    <a href="?route=logout" class="nav-link text-muted">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
+                    <a href="?route=dashboard" class="nav-link"><?= __('dashboard') ?></a>
+                    <a href="?route=create_trip" class="nav-link btn-primary-sm"><?= __('new_trip') ?></a>
+                    <a href="?route=logout" class="nav-link text-muted"><?= __('logout') ?> (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
                 <?php else: ?>
                     <?php if (($_GET['route'] ?? 'home') !== 'login'): ?>
-                        <a href="?route=login" class="nav-link btn-primary-sm">Login</a>
+                        <a href="?route=login" class="nav-link btn-primary-sm"><?= __('login') ?></a>
                     <?php endif; ?>
                 <?php endif; ?>
+                <div class="lang-switcher" style="margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--border-glass);">
+                    <?php $currentParams = $_GET; ?>
+                    <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'en'])) ?>" class="nav-link <?= \App\Utils\Translator::getCurrentLang() === 'en' ? 'active text-primary' : 'text-muted' ?>" style="padding: 0 4px;">EN</a>
+                    <span class="text-muted">|</span>
+                    <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'fr'])) ?>" class="nav-link <?= \App\Utils\Translator::getCurrentLang() === 'fr' ? 'active text-primary' : 'text-muted' ?>" style="padding: 0 4px;">FR</a>
+                </div>
             </div>
         </div>
     </nav>

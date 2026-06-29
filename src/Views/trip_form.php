@@ -1,12 +1,12 @@
 <?php
 $isEdit = isset($trip) && $trip;
-$pageTitle = $isEdit ? 'Edit Trip - SillageGPX' : 'Log a Trip - SillageGPX';
+$pageTitle = $isEdit ? __('edit_trip') . ' - ' . __('site_title') : __('log_a_trip') . ' - ' . __('site_title');
 ob_start();
 ?>
 
 <div class="form-container">
     <div class="glass-card">
-        <h2><?= $isEdit ? 'Edit Trip' : 'Log a New Trip' ?></h2>
+        <h2><?= $isEdit ? __('edit_trip') : __('log_a_trip') ?></h2>
         
         <form action="?route=<?= $isEdit ? 'edit_trip' : 'create_trip' ?>" method="POST" enctype="multipart/form-data" class="main-form">
             <?php if ($isEdit): ?>
@@ -14,30 +14,30 @@ ob_start();
             <?php endif; ?>
             
             <div class="form-section">
-                <h3>General Details</h3>
+                <h3><?= __('general_details') ?></h3>
                 
                 <div class="form-group">
-                    <label for="title">Trip Title <span class="required">*</span></label>
-                    <input type="text" id="title" name="title" required class="form-control glass-input" placeholder="e.g., Summer Cruise in Brittany" value="<?= $isEdit ? htmlspecialchars($trip->title) : '' ?>">
+                    <label for="title"><?= __('trip_title') ?> <span class="required">*</span></label>
+                    <input type="text" id="title" name="title" required class="form-control glass-input" placeholder="<?= __('title_placeholder') ?>" value="<?= $isEdit ? htmlspecialchars($trip->title) : '' ?>">
                 </div>
                 
                 <div class="form-group">
-                    <label for="boat_name">Boat Name</label>
+                    <label for="boat_name"><?= __('boat_name') ?></label>
                     <input type="text" id="boat_name" name="boat_name" class="form-control glass-input" value="<?= $isEdit ? htmlspecialchars($trip->boat_name ?? '') : '' ?>">
                 </div>
                 
                 <div class="form-group">
-                    <label for="comment">Captain's Log</label>
-                    <textarea id="comment" name="comment" rows="5" class="form-control glass-input" placeholder="Write your comments about this trip..."><?= $isEdit ? htmlspecialchars($trip->comment ?? '') : '' ?></textarea>
+                    <label for="comment"><?= __('captains_log') ?></label>
+                    <textarea id="comment" name="comment" rows="5" class="form-control glass-input" placeholder="<?= __('comment_placeholder') ?>"><?= $isEdit ? htmlspecialchars($trip->comment ?? '') : '' ?></textarea>
                 </div>
             </div>
             
             <div class="form-section">
-                <h3><?= $isEdit ? 'Tracks (GPX)' : 'Tracks (GPX)' ?></h3>
+                <h3><?= __('tracks_gpx') ?></h3>
                 
                 <?php if ($isEdit && !empty($existingSteps)): ?>
                     <div class="existing-tracks mb-4">
-                        <p class="text-sm"><strong>Existing Tracks:</strong></p>
+                        <p class="text-sm"><strong><?= __('existing_tracks') ?></strong></p>
                         <ul class="file-list mt-2" id="existingTracksList">
                             <?php foreach ($existingSteps as $step): ?>
                                 <li class="file-list-item glass" id="step-<?= $step->id ?>">
@@ -49,14 +49,14 @@ ob_start();
                     </div>
                 <?php endif; ?>
                 
-                <p class="text-muted text-sm">Upload one or multiple GPX files. Each file will be processed as a separate 'step' of your trip.</p>
+                <p class="text-muted text-sm"><?= __('upload_help') ?></p>
                 
                 <div class="form-group">
                     <div class="file-upload-wrapper glass-input" id="dropZone">
                         <input type="file" id="gpx_files" name="gpx_files[]" multiple accept=".gpx" class="file-input">
                         <div class="file-upload-display">
                             <span class="file-icon">📁</span>
-                            <span class="file-text">Choose <?= $isEdit ? 'more ' : '' ?>GPX files or drag & drop them here</span>
+                            <span class="file-text"><?= $isEdit ? __('choose_more_files') : __('choose_files') ?></span>
                         </div>
                     </div>
                     <ul id="fileList" class="file-list mt-2"></ul>
@@ -64,35 +64,35 @@ ob_start();
             </div>
             
             <div class="form-section">
-                <h3>Privacy</h3>
+                <h3><?= __('privacy') ?></h3>
                 <div class="radio-group">
                     <label class="radio-label">
                         <input type="radio" name="visibility" value="private" <?= (!$isEdit || $trip->visibility === 'private') ? 'checked' : '' ?>>
                         <div class="radio-content">
-                            <strong>Private</strong>
-                            <span class="text-sm">Only you can see this trip.</span>
+                            <strong><?= __('private') ?></strong>
+                            <span class="text-sm"><?= __('private_desc') ?></span>
                         </div>
                     </label>
                     <label class="radio-label">
                         <input type="radio" name="visibility" value="unlisted" <?= ($isEdit && $trip->visibility === 'unlisted') ? 'checked' : '' ?>>
                         <div class="radio-content">
-                            <strong>Unlisted</strong>
-                            <span class="text-sm">Anyone with the unique link can view it.</span>
+                            <strong><?= __('unlisted') ?></strong>
+                            <span class="text-sm"><?= __('unlisted_desc') ?></span>
                         </div>
                     </label>
                     <label class="radio-label">
                         <input type="radio" name="visibility" value="public" <?= ($isEdit && $trip->visibility === 'public') ? 'checked' : '' ?>>
                         <div class="radio-content">
-                            <strong>Public</strong>
-                            <span class="text-sm">Visible on your public profile.</span>
+                            <strong><?= __('public') ?></strong>
+                            <span class="text-sm"><?= __('public_desc') ?></span>
                         </div>
                     </label>
                 </div>
             </div>
             
             <div class="form-actions">
-                <a href="<?= $isEdit ? '?route=trip&id=' . $trip->id : '?route=dashboard' ?>" class="btn btn-outline">Cancel</a>
-                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Save Changes' : 'Save Trip' ?></button>
+                <a href="<?= $isEdit ? '?route=trip&id=' . $trip->id : '?route=dashboard' ?>" class="btn btn-outline"><?= __('cancel') ?></a>
+                <button type="submit" class="btn btn-primary"><?= $isEdit ? __('save_changes') : __('save_trip') ?></button>
             </div>
         </form>
     </div>

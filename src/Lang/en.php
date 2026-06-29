@@ -1,0 +1,78 @@
+<?php
+return [
+    // Navigation & Layout
+    'site_title' => 'SillageGPX',
+    'dashboard' => 'Dashboard',
+    'new_trip' => '+ New Trip',
+    'logout' => 'Logout',
+    'login' => 'Login',
+    'language' => 'Language',
+    
+    // Home
+    'home_subtitle' => 'Manage, view, and share your GPX tracks.',
+    'go_to_dashboard' => 'Go to Dashboard',
+    'get_started' => 'Get Started',
+    
+    // Auth
+    'welcome_back' => 'Welcome Back',
+    'username' => 'Username',
+    'password' => 'Password',
+    'log_in' => 'Log In',
+    'new_to_site' => 'New to SillageGPX?',
+    'email' => 'Email',
+    'create_account' => 'Create Account',
+    'invalid_credentials' => 'Invalid username or password.',
+    'fields_required' => 'All fields are required.',
+    'user_exists' => 'Username or email already exists.',
+    
+    // Dashboard
+    'your_logbook' => 'Your Logbook',
+    'log_new_trip' => '+ Log New Trip',
+    'no_trips' => 'No trips logged yet',
+    'no_trips_desc' => 'Start recording your adventures on the water by creating your first trip and uploading a GPX file.',
+    'log_first_trip' => 'Log your first trip',
+    'boat' => 'Boat',
+    'date' => 'Date',
+    'views' => 'views',
+    'to' => 'to',
+    
+    // Trip Form
+    'edit_trip' => 'Edit Trip',
+    'log_a_trip' => 'Log a New Trip',
+    'general_details' => 'General Details',
+    'trip_title' => 'Trip Title',
+    'boat_name' => 'Boat Name',
+    'captains_log' => 'Captain\'s Log',
+    'tracks_gpx' => 'Tracks (GPX)',
+    'existing_tracks' => 'Existing Tracks:',
+    'upload_help' => 'Upload one or multiple GPX files. Each file will be processed as a separate \'step\' of your trip.',
+    'choose_files' => 'Choose GPX files or drag & drop them here',
+    'choose_more_files' => 'Choose more GPX files or drag & drop them here',
+    'privacy' => 'Privacy',
+    'private' => 'Private',
+    'private_desc' => 'Only you can see this trip.',
+    'unlisted' => 'Unlisted',
+    'unlisted_desc' => 'Anyone with the unique link can view it.',
+    'public' => 'Public',
+    'public_desc' => 'Visible on your public profile.',
+    'cancel' => 'Cancel',
+    'save_changes' => 'Save Changes',
+    'save_trip' => 'Save Trip',
+    'title_placeholder' => 'e.g., Summer Cruise in Brittany',
+    'comment_placeholder' => 'Write your comments about this trip...',
+    
+    // Trip View
+    'copy_link' => 'Copy Link',
+    'regenerate' => 'Regenerate',
+    'no_tracks' => 'No GPX tracks available for this trip yet.',
+    'nav_days' => 'Navigation Days',
+    'trip_stats' => 'Trip Statistics',
+    'speed_profile' => 'Speed Profile',
+    'distance' => 'Distance',
+    'duration' => 'Duration',
+    'avg_speed' => 'Avg Speed',
+    'max_speed' => 'Max Speed',
+    'trip_overview' => 'Trip Overview',
+    'days' => 'Days',
+    'day' => 'Day'
+];

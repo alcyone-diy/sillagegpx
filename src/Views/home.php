@@ -1,18 +1,18 @@
 <?php
-$pageTitle = 'Home - SillageGPX';
+$pageTitle = __('site_title');
 ob_start();
 ?>
 
 <div class="hero">
     <div class="hero-content glass-card">
-        <h1 class="hero-title">SillageGPX</h1>
-        <p class="hero-subtitle">Manage, view, and share your GPX tracks.</p>
+        <h1 class="hero-title"><?= __('site_title') ?></h1>
+        <p class="hero-subtitle"><?= __('home_subtitle') ?></p>
         
         <div class="hero-actions">
             <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="?route=dashboard" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                <a href="?route=dashboard" class="btn btn-primary btn-lg"><?= __('go_to_dashboard') ?></a>
             <?php else: ?>
-                <a href="?route=login" class="btn btn-primary btn-lg">Get Started</a>
+                <a href="?route=login" class="btn btn-primary btn-lg"><?= __('get_started') ?></a>
             <?php endif; ?>
         </div>
     </div>

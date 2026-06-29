@@ -24,6 +24,14 @@ spl_autoload_register(function ($class) {
 // Initialize database
 \App\Utils\Database::initIfNeeded();
 
+// Initialize Translator
+\App\Utils\Translator::init();
+
+// Global translation helper
+function __(string $key): string {
+    return \App\Utils\Translator::get($key);
+}
+
 // Simple routing based on the 'route' parameter provided by .htaccess
 $route = isset($_GET['route']) ? rtrim($_GET['route'], '/') : '';
 $method = $_SERVER['REQUEST_METHOD'];
