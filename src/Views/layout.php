@@ -21,21 +21,24 @@
     <nav class="navbar glass">
         <div class="nav-container">
             <!-- Left: Logo & Primary Nav -->
-            <div class="nav-left" style="display: flex; align-items: center; gap: 2rem;">
-                <a href="?route=home" class="logo">⛵ Sillage<span>GPX</span></a>
+            <div class="nav-left d-flex align-items-center">
+                <a href="?route=home" class="logo">⛵ <span class="hide-on-mobile">Sillage</span>GPX</a>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="nav-main-links" style="display: flex; gap: 1.5rem;">
-                        <a href="?route=dashboard" class="nav-link"><?= __('dashboard') ?></a>
+                    <div class="nav-main-links d-flex">
+                        <a href="?route=dashboard" class="nav-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="show-on-mobile" style="display:none; margin-right: 0.2rem;"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                            <span class="hide-on-mobile"><?= __('dashboard') ?></span>
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
 
             <!-- Right: Actions & User Profile -->
-            <div class="nav-right" style="display: flex; align-items: center; gap: 1rem;">
+            <div class="nav-right d-flex align-items-center">
                 
                 <!-- Language Dropdown -->
-                <div class="dropdown" style="margin-left: 0; padding-left: 0; border-left: none;">
-                    <button class="nav-link btn-ghost" style="border: none; cursor: pointer; padding: 0.4rem 0.6rem; font-weight: 500; display: flex; align-items: center; gap: 0.3rem; border-radius: var(--radius-sm);">
+                <div class="dropdown nav-dropdown-lang">
+                    <button class="nav-link btn-ghost dropdown-btn">
                         <?= strtoupper(\App\Utils\Translator::getCurrentLang()) ?>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
@@ -48,23 +51,26 @@
 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <!-- CTA -->
-                    <a href="?route=create_trip" class="btn btn-primary-sm" style="margin: 0 0.5rem;"><?= __('new_trip') ?></a>
+                    <a href="?route=create_trip" class="btn btn-primary-sm cta-new-trip">
+                        <span class="hide-on-mobile"><?= __('new_trip') ?></span>
+                        <span class="show-on-mobile" style="display:none;">+</span>
+                    </a>
                     
                     <!-- User Profile Dropdown -->
-                    <div class="dropdown" style="margin-left: 0; padding-left: 0; border-left: none;">
-                        <button class="nav-link btn-ghost" style="border: none; cursor: pointer; padding: 0.3rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; background: rgba(0,0,0,0.04); border-radius: 30px; padding-right: 1rem;">
-                            <div style="width: 28px; height: 28px; background: var(--accent-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">
+                    <div class="dropdown nav-dropdown-user">
+                        <button class="nav-link btn-ghost user-profile-btn dropdown-btn">
+                            <div class="avatar-circle">
                                 <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
                             </div>
-                            <?= htmlspecialchars($_SESSION['username']) ?>
+                            <span class="hide-on-mobile"><?= htmlspecialchars($_SESSION['username']) ?></span>
                         </button>
-                        <div class="dropdown-menu glass" style="min-width: 150px;">
+                        <div class="dropdown-menu glass" style="min-width: 150px; right: 0;">
                             <a href="?route=logout" class="dropdown-item" style="color: var(--error);"><?= __('logout') ?></a>
                         </div>
                     </div>
                 <?php else: ?>
                     <?php if (($_GET['route'] ?? 'home') !== 'login'): ?>
-                        <a href="?route=login" class="btn btn-primary-sm" style="margin-left: 0.5rem;"><?= __('login') ?></a>
+                        <a href="?route=login" class="btn btn-primary-sm cta-login"><?= __('login') ?></a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
