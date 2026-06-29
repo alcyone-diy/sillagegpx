@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\Trip;
 use App\Models\TripStep;
 use App\Models\GpxTrack;
+use App\Models\TripLink;
 use App\Utils\GpxParser;
 
 class TripController {
@@ -47,6 +48,17 @@ class TripController {
         $trip = Trip::create($userId, $title, null, null, $boatName, $comment, $visibility);
         
         if ($trip) {
+            // Handle Links
+            if (isset($_POST['links_url']) && is_array($_POST['links_url'])) {
+                foreach ($_POST['links_url'] as $index => $url) {
+                    $url = trim($url);
+                    if (!empty($url)) {
+                        $label = isset($_POST['links_label'][$index]) ? trim($_POST['links_label'][$index]) : null;
+                        TripLink::create($trip->id, $url, $label ?: null);
+                    }
+                }
+            }
+            
             // Handle GPX upload
             if (isset($_FILES['gpx_files']) && !empty($_FILES['gpx_files']['name'][0])) {
                 $this->processGpxUploads($trip, $_FILES['gpx_files']);
@@ -127,6 +139,7 @@ class TripController {
         }
         
         $existingSteps = TripStep::findByTripId($trip->id);
+        $existingLinks = TripLink::findByTripId($trip->id);
         
         require SRC_PATH . '/Views/trip_form.php';
     }
@@ -152,6 +165,18 @@ class TripController {
         }
         
         $trip->update();
+        
+        // Handle Links
+        TripLink::deleteByTripId($trip->id);
+        if (isset($_POST['links_url']) && is_array($_POST['links_url'])) {
+            foreach ($_POST['links_url'] as $index => $url) {
+                $url = trim($url);
+                if (!empty($url)) {
+                    $label = isset($_POST['links_label'][$index]) ? trim($_POST['links_label'][$index]) : null;
+                    TripLink::create($trip->id, $url, $label ?: null);
+                }
+            }
+        }
         
         // Handle new GPX uploads if any
         if (isset($_FILES['gpx_files']) && !empty($_FILES['gpx_files']['name'][0])) {
@@ -271,6 +296,7 @@ class TripController {
         }
         
         $steps = TripStep::findByTripId($trip->id);
+        $links = TripLink::findByTripId($trip->id);
         $tracksData = [];
         
         foreach ($steps as $step) {

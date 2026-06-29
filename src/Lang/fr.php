@@ -61,6 +61,11 @@ return [
     'save_trip' => 'Enregistrer la Navigation',
     'title_placeholder' => 'ex: Croisière d\'été en Bretagne',
     'comment_placeholder' => 'Écrivez vos notes sur cette navigation...',
+    'useful_links' => 'Liens Utiles',
+    'add_link' => '+ Ajouter un lien',
+    'link_url' => 'URL',
+    'link_label' => 'Titre',
+    'remove_link' => 'Supprimer le lien',
     
     // Trip View
     'copy_link' => 'Copier le lien',

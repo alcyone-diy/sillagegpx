@@ -3,6 +3,45 @@ $isEdit = isset($trip) && $trip;
 $pageTitle = $isEdit ? __('edit_trip') . ' - ' . __('site_title') : __('log_a_trip') . ' - ' . __('site_title');
 ob_start();
 ?>
+<style>
+.link-entry {
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    width: calc(100% + 1rem);
+}
+.link-entry:has(.remove-link:hover) {
+    background-color: rgba(220, 53, 69, 0.04);
+}
+.link-entry:has(.remove-link:hover) .glass-input {
+    border-color: rgba(220, 53, 69, 0.4) !important;
+    box-shadow: 0 4px 6px -1px rgba(220, 53, 69, 0.1);
+}
+.link-entry:has(.remove-link:hover) input {
+    color: #dc3545;
+}
+/* Fix focus ring for combined input bubble */
+.link-entry .glass-input:has(.link-field-inner:focus) {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.link-entry .link-field-inner:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+@media (max-width: 768px) {
+    .link-entry .glass-input {
+        flex-direction: column;
+    }
+    .link-entry .glass-input > div {
+        width: 100% !important;
+        height: 1px;
+        margin: 0 !important;
+    }
+}
+</style>
 
 <div class="form-container">
     <div class="glass-card mb-4" style="text-align: center;">
@@ -31,6 +70,29 @@ ob_start();
                 <label for="comment"><?= __('captains_log') ?></label>
                 <textarea id="comment" name="comment" rows="5" class="form-control glass-input" placeholder="<?= __('comment_placeholder') ?>"><?= $isEdit ? htmlspecialchars($trip->comment ?? '') : '' ?></textarea>
             </div>
+        </div>
+        
+        <div class="form-section glass-card mb-4">
+            <h3 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);"><?= __('useful_links') ?></h3>
+            
+            <div id="linksContainer">
+                <?php if ($isEdit && !empty($existingLinks)): ?>
+                    <?php foreach ($existingLinks as $link): ?>
+                        <div class="link-entry d-flex mb-3" style="gap: 1rem; align-items: center;">
+                            <div class="glass-input d-flex flex-grow-1" style="padding: 0; overflow: hidden; align-items: stretch; border-radius: var(--radius-md, 8px);">
+                                <input type="text" name="links_label[]" class="form-control flex-grow-1 link-field-inner" placeholder="<?= __('link_label') ?>" value="<?= htmlspecialchars($link->label ?? '') ?>" style="border: none; border-radius: 0; background: transparent; box-shadow: none;">
+                                <div style="width: 1px; background: rgba(0,0,0,0.1); margin: 0.5rem 0;"></div>
+                                <input type="url" name="links_url[]" class="form-control flex-grow-1 link-field-inner" placeholder="<?= __('link_url') ?>" value="<?= htmlspecialchars($link->url) ?>" required style="border: none; border-radius: 0; background: transparent; box-shadow: none;">
+                            </div>
+                            <button type="button" class="btn-icon remove-link" style="background: transparent; border: none; color: #dc3545; cursor: pointer; padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; opacity: 0.7; flex-shrink: 0;" onmouseover="this.style.background='rgba(220,53,69,0.1)'; this.style.opacity='1'" onmouseout="this.style.background='transparent'; this.style.opacity='0.7'" title="<?= __('remove_link') ?>">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            
+            <button type="button" id="addLinkBtn" class="btn btn-outline mt-2" style="font-size: 0.9rem; padding: 0.5rem 1rem;"><?= __('add_link') ?></button>
         </div>
         
         <div class="form-section glass-card mb-4">
@@ -99,6 +161,47 @@ ob_start();
 </div>
 
 <?php
+$linkUrlPlaceholder = addslashes(__('link_url'));
+$linkLabelPlaceholder = addslashes(__('link_label'));
+$removeLinkPlaceholder = addslashes(__('remove_link'));
+$extraJs = <<<JS
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const linksContainer = document.getElementById('linksContainer');
+    const addLinkBtn = document.getElementById('addLinkBtn');
+    
+    if (addLinkBtn) {
+        addLinkBtn.addEventListener('click', function() {
+            const div = document.createElement('div');
+            div.className = 'link-entry d-flex mb-3';
+            div.style.gap = '1rem';
+            div.style.alignItems = 'center';
+            
+            div.innerHTML = `
+                <div class="glass-input d-flex flex-grow-1" style="padding: 0; overflow: hidden; align-items: stretch; border-radius: var(--radius-md, 8px);">
+                    <input type="text" name="links_label[]" class="form-control flex-grow-1 link-field-inner" placeholder="{$linkLabelPlaceholder}" style="border: none; border-radius: 0; background: transparent; box-shadow: none;">
+                    <div style="width: 1px; background: rgba(0,0,0,0.1); margin: 0.5rem 0;"></div>
+                    <input type="url" name="links_url[]" class="form-control flex-grow-1 link-field-inner" placeholder="{$linkUrlPlaceholder}" required style="border: none; border-radius: 0; background: transparent; box-shadow: none;">
+                </div>
+                <button type="button" class="btn-icon remove-link" style="background: transparent; border: none; color: #dc3545; cursor: pointer; padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; opacity: 0.7; flex-shrink: 0;" onmouseover="this.style.background='rgba(220,53,69,0.1)'; this.style.opacity='1'" onmouseout="this.style.background='transparent'; this.style.opacity='0.7'" title="{$removeLinkPlaceholder}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                </button>
+            `;
+            
+            linksContainer.appendChild(div);
+        });
+    }
+    
+    if (linksContainer) {
+        linksContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-link')) {
+                e.target.closest('.link-entry').remove();
+            }
+        });
+    }
+});
+</script>
+JS;
 $content = ob_get_clean();
 require __DIR__ . '/layout.php';
 ?>

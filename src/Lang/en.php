@@ -61,6 +61,11 @@ return [
     'save_trip' => 'Save Trip',
     'title_placeholder' => 'e.g., Summer Cruise in Brittany',
     'comment_placeholder' => 'Write your comments about this trip...',
+    'useful_links' => 'Useful Links',
+    'add_link' => '+ Add Link',
+    'link_url' => 'URL',
+    'link_label' => 'Title',
+    'remove_link' => 'Remove link',
     
     // Trip View
     'copy_link' => 'Copy Link',
