@@ -5,7 +5,7 @@ ob_start();
 
 <div class="hero">
     <div class="hero-content glass-card">
-        <h1 class="hero-title"><?= __('site_title') ?></h1>
+        <h1 class="hero-title"><?= __('home_title') ?></h1>
         <p class="hero-subtitle"><?= __('home_subtitle') ?></p>
         
         <div class="hero-actions">

@@ -2,15 +2,16 @@
 return [
     // Navigation & Layout
     'site_title' => 'SillageGPX',
-    'dashboard' => 'Dashboard',
+    'dashboard' => 'Logbook',
     'new_trip' => '+ New Trip',
     'logout' => 'Logout',
     'login' => 'Login',
     'language' => 'Language',
     
     // Home
+    'home_title' => 'Your Digital Logbook',
     'home_subtitle' => 'Manage, view, and share your GPX tracks.',
-    'go_to_dashboard' => 'Go to Dashboard',
+    'go_to_dashboard' => 'Go to Logbook',
     'get_started' => 'Get Started',
     
     // Auth
