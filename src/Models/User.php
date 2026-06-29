@@ -26,6 +26,21 @@ class User {
         }
         return null;
     }
+    public static function findByEmail(string $email): ?User {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt->execute(['email' => $email]);
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            $user = new User();
+            foreach ($data as $key => $value) {
+                $user->$key = $value;
+            }
+            return $user;
+        }
+        return null;
+    }
 
     public static function findById(int $id): ?User {
         $pdo = Database::getConnection();

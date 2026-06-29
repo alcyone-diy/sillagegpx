@@ -8,8 +8,8 @@ ob_start();
         <h2><?= __('welcome_back') ?></h2>
         <form action="?route=login" method="POST" class="auth-form">
             <div class="form-group">
-                <label for="username"><?= __('username') ?></label>
-                <input type="text" id="username" name="username" required class="form-control glass-input">
+                <label for="email"><?= __('email') ?></label>
+                <input type="email" id="email" name="email" required class="form-control glass-input">
             </div>
             <div class="form-group">
                 <label for="password"><?= __('password') ?></label>
@@ -17,7 +17,7 @@ ob_start();
             </div>
             <button type="submit" class="btn btn-primary btn-block"><?= __('log_in') ?></button>
             <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 1.5rem 0;">
-            <button type="button" id="btn-login-passkey" class="btn btn-secondary btn-block">Se connecter avec Passkey</button>
+            <button type="button" id="btn-login-passkey" class="btn btn-secondary btn-block"><?= __('login_with_passkey') ?></button>
         </form>
     </div>
 

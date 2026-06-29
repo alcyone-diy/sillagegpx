@@ -28,18 +28,20 @@ class AuthController {
             return;
         }
 
-        $username = $_POST['username'] ?? '';
+        $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         
-        $user = User::findByUsername($username);
+        $user = User::findByEmail($email);
         
         if ($user && password_verify($password, $user->password_hash)) {
             // Success: clear past failed attempts for this IP
             $stmt = $pdo->prepare("DELETE FROM login_attempts WHERE ip_address = ?");
             $stmt->execute([$ip]);
 
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user->id;
             $_SESSION['username'] = $user->username;
+            
             header('Location: ?route=dashboard');
             exit;
         } else {

@@ -114,5 +114,6 @@ return [
     'webauthn_error' => 'WebAuthn Error:',
     'copy_failed' => 'Copy failed. Please manually copy this link:',
     'link_generated' => 'New link generated successfully!',
-    'network_error' => 'Network error'
+    'network_error' => 'Network error',
+    'login_with_passkey' => 'Login with Passkey'
 ];
