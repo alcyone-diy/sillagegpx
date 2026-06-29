@@ -10,6 +10,11 @@ return [
     'admin' => 'Administration',
     'about' => 'About',
     'contact_us' => 'Contact Us',
+    'about_desc' => 'Your digital logbook, designed with simplicity and elegance to let you relive your sailing trips.',
+    'show_email' => 'Show Email',
+    'too_many_attempts' => 'Too many failed attempts. For your security, please wait 15 minutes.',
+    'captcha_required' => 'Please verify that you are not a robot.',
+    'captcha_failed' => 'Bot validation failed. Please try again.',
     
     // Home
     'home_title' => 'Your Digital Logbook',

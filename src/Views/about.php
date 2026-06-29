@@ -11,11 +11,11 @@ ob_start();
     <div class="glass-card mb-4 text-center" style="padding: 3rem 2rem;">
         <h3 class="mb-2" style="color: var(--accent-primary);">SillageGPX</h3>
         <p class="text-muted mb-4" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-            Votre journal de bord numérique, conçu avec simplicité et élégance pour vous permettre de revivre vos navigations.
+            <?= __('about_desc') ?? 'Your digital logbook, designed with simplicity and elegance to let you relive your sailing trips.' ?>
         </p>
 
         <div style="margin-top: 2rem; display: flex; flex-direction: column; align-items: center;">
-            <p style="font-weight: 600; margin-bottom: 0.5rem;"><?= __('contact_us') ?? 'Nous contacter' ?></p>
+            <p style="font-weight: 600; margin-bottom: 0.5rem;"><?= __('contact_us') ?></p>
             
             <?php if (defined('TURNSTILE_SITE_KEY') && TURNSTILE_SITE_KEY !== ''): ?>
                 <div id="turnstile-container" class="cf-turnstile" data-sitekey="<?= htmlspecialchars(TURNSTILE_SITE_KEY) ?>" data-callback="onTurnstileSuccess" data-theme="light"></div>

@@ -23,7 +23,7 @@ class AuthController {
         $attempts = $stmt->fetchColumn();
 
         if ($attempts >= 5) {
-            $error = "Trop de tentatives échouées. Par sécurité, veuillez patienter 15 minutes.";
+            $error = __('too_many_attempts');
             require SRC_PATH . '/Views/login.php';
             return;
         }
@@ -47,7 +47,7 @@ class AuthController {
             $stmt = $pdo->prepare("INSERT INTO login_attempts (ip_address) VALUES (?)");
             $stmt->execute([$ip]);
 
-            $error = __('invalid_credentials') ?? 'Identifiants incorrects';
+            $error = __('invalid_credentials');
             require SRC_PATH . '/Views/login.php';
         }
     }
@@ -66,7 +66,7 @@ class AuthController {
         if (defined('TURNSTILE_SECRET_KEY') && TURNSTILE_SECRET_KEY !== '') {
             $turnstileResponse = $_POST['cf-turnstile-response'] ?? '';
             if (empty($turnstileResponse)) {
-                $error = "Veuillez valider que vous n'êtes pas un robot.";
+                $error = __('captcha_required');
                 require SRC_PATH . '/Views/login.php';
                 return;
             }
@@ -84,7 +84,7 @@ class AuthController {
 
             $responseData = json_decode($verifyResponse);
             if (!$responseData || !$responseData->success) {
-                $error = "Validation anti-robot échouée. Veuillez réessayer.";
+                $error = __('captcha_failed');
                 require SRC_PATH . '/Views/login.php';
                 return;
             }

@@ -10,6 +10,11 @@ return [
     'admin' => 'Administration',
     'about' => 'À propos',
     'contact_us' => 'Nous contacter',
+    'about_desc' => 'Votre journal de bord numérique, conçu avec simplicité et élégance pour vous permettre de revivre vos navigations.',
+    'show_email' => 'Afficher l\'email',
+    'too_many_attempts' => 'Trop de tentatives échouées. Par sécurité, veuillez patienter 15 minutes.',
+    'captcha_required' => 'Veuillez valider que vous n\'êtes pas un robot.',
+    'captcha_failed' => 'Validation anti-robot échouée. Veuillez réessayer.',
     
     // Home
     'home_title' => 'Votre Journal de Bord Numérique',
