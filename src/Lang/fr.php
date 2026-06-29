@@ -93,7 +93,6 @@ return [
     // Profile & Passkeys
     'profile' => 'Profil',
     'my_profile' => 'Mon Profil',
-    'back_to_dashboard' => 'Retour au Tableau de Bord',
     'personal_info' => 'Informations Personnelles',
     'change_password_optional' => 'Changer le mot de passe (Optionnel)',
     'new_password' => 'Nouveau mot de passe',

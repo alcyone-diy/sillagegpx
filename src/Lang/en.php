@@ -93,7 +93,6 @@ return [
     // Profile & Passkeys
     'profile' => 'Profile',
     'my_profile' => 'My Profile',
-    'back_to_dashboard' => 'Back to Dashboard',
     'personal_info' => 'Personal Information',
     'change_password_optional' => 'Change Password (Optional)',
     'new_password' => 'New Password',

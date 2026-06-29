@@ -5,7 +5,6 @@ ob_start();
 
 <div class="dashboard-header">
     <h2><?= __('profile') ?></h2>
-    <a href="?route=dashboard" class="btn btn-secondary"><?= __('back_to_dashboard') ?></a>
 </div>
 
 <div class="trips-grid">
