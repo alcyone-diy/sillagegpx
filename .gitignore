@@ -17,3 +17,6 @@ data
 
 # Local configuration overrides (secrets, API keys)
 src/config.local.php
+
+# Composer dependencies
+vendor/
