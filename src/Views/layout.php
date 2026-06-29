@@ -69,7 +69,7 @@
                             </div>
                             <span class="hide-on-mobile"><?= htmlspecialchars($_SESSION['username']) ?></span>
                         </button>
-                        <div class="dropdown-menu glass" style="min-width: 150px; right: 0;">
+                        <div class="dropdown-menu glass" style="min-width: max-content; right: 0; white-space: nowrap;">
                             <a href="?route=profile" class="dropdown-item">👤 Mon Profil</a>
                             <?php if ((int)$_SESSION['user_id'] === 1): ?>
                                 <a href="?route=admin" class="dropdown-item" style="color: var(--warning);">🛠️ <?= __('admin') ?></a>
