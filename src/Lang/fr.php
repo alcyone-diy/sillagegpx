@@ -7,6 +7,7 @@ return [
     'logout' => 'Déconnexion',
     'login' => 'Connexion',
     'language' => 'Langue',
+    'admin' => 'Administration',
     
     // Home
     'home_title' => 'Votre Journal de Bord Numérique',

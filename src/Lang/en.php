@@ -7,6 +7,7 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'language' => 'Language',
+    'admin' => 'Administration',
     
     // Home
     'home_title' => 'Your Digital Logbook',

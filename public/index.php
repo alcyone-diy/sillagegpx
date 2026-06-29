@@ -92,6 +92,9 @@ if ($route === '' || $route === 'home') {
 } elseif ($route === 'api/track') {
     $controller = new \App\Controllers\TripController();
     $controller->apiTrackData();
+} elseif ($route === 'admin') {
+    $controller = new \App\Controllers\AdminController();
+    $controller->showAdmin();
 } else {
     http_response_code(404);
     echo "Page not found (404): " . htmlspecialchars($route);
