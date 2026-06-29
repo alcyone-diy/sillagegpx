@@ -13,3 +13,4 @@ public/uploads/processed/*
 .DS_Store
 
 public/error_log
+data
