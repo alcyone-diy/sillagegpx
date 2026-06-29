@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mapPolylines.forEach(layer => map.removeLayer(layer));
         mapPolylines = [];
 
+        if (window.hoverMarker && map.hasLayer(window.hoverMarker)) {
+            map.removeLayer(window.hoverMarker);
+            window.hoverMarker = null;
+        }
+
         let stats = { distance: 0, duration: 0, maxSpeed: 0 };
         let tracksToRender = [];
         let datasetsMap = {};
