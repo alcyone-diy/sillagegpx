@@ -1,0 +1,15 @@
+# SQLite database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploaded files (do not version generated GPX and JSON traces)
+public/uploads/gpx/*
+public/uploads/processed/*
+!public/uploads/gpx/.gitkeep
+!public/uploads/processed/.gitkeep
+
+# System files
+.DS_Store
+
+public/error_log

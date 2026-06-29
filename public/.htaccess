@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # If the requested file or folder exists (e.g., css, js, images), serve it directly
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Otherwise, redirect everything to index.php passing the URL as a "route" parameter
+    RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+</IfModule>
