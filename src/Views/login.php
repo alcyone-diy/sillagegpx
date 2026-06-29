@@ -99,10 +99,10 @@ document.getElementById('btn-login-passkey').addEventListener('click', async () 
         if (verifyResult.success) {
             window.location.href = '?route=dashboard';
         } else {
-            alert("Erreur: " + verifyResult.error);
+            alert(<?= json_encode(__('error')) ?> + " " + verifyResult.error);
         }
     } catch (e) {
-        alert("Erreur WebAuthn: " + e.message);
+        alert(<?= json_encode(__('webauthn_error')) ?> + " " + e.message);
     }
 });
 </script>

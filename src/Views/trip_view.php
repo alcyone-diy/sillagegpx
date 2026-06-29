@@ -133,8 +133,7 @@ function copyShareUrl() {
             document.execCommand('copy');
             showSuccess();
         } catch (err) {
-            console.error('Fallback: unable to copy', err);
-            alert("Copy failed. Please manually copy this link: " + text);
+            alert(<?= json_encode(__('copy_failed')) ?> + " " + text);
         }
         document.body.removeChild(textArea);
     };
@@ -163,13 +162,13 @@ function regenerateToken(tripId) {
     .then(r => r.json())
     .then(data => {
         if (data.success) {
-            document.getElementById('copyBtn').setAttribute('data-token', data.new_token);
-            alert('New link generated successfully!');
+            alert(<?= json_encode(__('link_generated')) ?>);
+            location.reload();
         } else {
-            alert('Error: ' + data.error);
+            alert(<?= json_encode(__('error')) ?> + ' ' + data.error);
         }
     })
-    .catch(err => alert('Network error'));
+    .catch(err => alert(<?= json_encode(__('network_error')) ?>));
 }
 </script>
 <script src="js/map.js"></script>

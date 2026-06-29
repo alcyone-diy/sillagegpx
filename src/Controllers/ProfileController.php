@@ -40,13 +40,13 @@ class ProfileController {
         $newPassword = $_POST['new_password'] ?? '';
 
         if (!password_verify($currentPassword, $user->password_hash)) {
-            $error = __('invalid_credentials') ?? 'Mot de passe actuel incorrect';
+            $error = __('invalid_credentials');
             $this->showProfileWithError($error);
             return;
         }
 
         if (empty($newUsername)) {
-            $error = __('username_required') ?? 'Le nom d\'utilisateur est requis';
+            $error = __('username_required');
             $this->showProfileWithError($error);
             return;
         }
@@ -58,10 +58,10 @@ class ProfileController {
 
         if ($user->update($newUsername, $passwordHash)) {
             $_SESSION['username'] = $newUsername;
-            $success = __('profile_updated') ?? 'Profil mis à jour avec succès';
+            $success = __('profile_updated');
             $this->showProfileWithSuccess($success);
         } else {
-            $error = __('update_failed') ?? 'Erreur lors de la mise à jour (nom d\'utilisateur peut-être déjà pris)';
+            $error = __('update_failed');
             $this->showProfileWithError($error);
         }
     }

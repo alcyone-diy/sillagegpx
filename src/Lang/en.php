@@ -88,5 +88,31 @@ return [
     'max_speed' => 'Max Speed',
     'trip_overview' => 'Trip Overview',
     'days' => 'Days',
-    'day' => 'Day'
+    'day' => 'Day',
+    
+    // Profile & Passkeys
+    'profile' => 'Profile',
+    'my_profile' => 'My Profile',
+    'back_to_dashboard' => 'Back to Dashboard',
+    'personal_info' => 'Personal Information',
+    'change_password_optional' => 'Change Password (Optional)',
+    'new_password' => 'New Password',
+    'current_password_required' => 'Current Password (required to save)',
+    'passkeys_title' => 'Passkeys',
+    'passkeys_desc' => 'Sign in without a password using TouchID, FaceID, or your device.',
+    'added_on' => 'Added on',
+    'confirm_delete_passkey' => 'Delete this passkey?',
+    'delete' => 'Delete',
+    'add_passkey' => 'Add a new Passkey',
+    'username_required' => 'Username is required.',
+    'profile_updated' => 'Profile updated successfully.',
+    'update_failed' => 'Update failed (username might already be taken).',
+
+    // JS Alerts
+    'passkey_registered' => 'Passkey successfully registered!',
+    'error' => 'Error:',
+    'webauthn_error' => 'WebAuthn Error:',
+    'copy_failed' => 'Copy failed. Please manually copy this link:',
+    'link_generated' => 'New link generated successfully!',
+    'network_error' => 'Network error'
 ];

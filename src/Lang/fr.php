@@ -88,5 +88,31 @@ return [
     'max_speed' => 'Vitesse Max.',
     'trip_overview' => 'Aperçu de la Navigation',
     'days' => 'Jours',
-    'day' => 'Jour'
+    'day' => 'Jour',
+
+    // Profile & Passkeys
+    'profile' => 'Profil',
+    'my_profile' => 'Mon Profil',
+    'back_to_dashboard' => 'Retour au Tableau de Bord',
+    'personal_info' => 'Informations Personnelles',
+    'change_password_optional' => 'Changer le mot de passe (Optionnel)',
+    'new_password' => 'Nouveau mot de passe',
+    'current_password_required' => 'Mot de passe actuel (requis pour enregistrer)',
+    'passkeys_title' => 'Clés d\'accès (Passkeys)',
+    'passkeys_desc' => 'Connectez-vous sans mot de passe à l\'aide de TouchID, FaceID ou de votre appareil.',
+    'added_on' => 'Ajouté le',
+    'confirm_delete_passkey' => 'Supprimer ce Passkey ?',
+    'delete' => 'Supprimer',
+    'add_passkey' => 'Ajouter un nouveau Passkey',
+    'username_required' => 'Le nom d\'utilisateur est requis.',
+    'profile_updated' => 'Profil mis à jour avec succès.',
+    'update_failed' => 'Erreur lors de la mise à jour (nom d\'utilisateur peut-être déjà pris).',
+
+    // JS Alerts
+    'passkey_registered' => 'Passkey enregistré avec succès !',
+    'error' => 'Erreur :',
+    'webauthn_error' => 'Erreur WebAuthn :',
+    'copy_failed' => 'La copie a échoué. Veuillez copier ce lien manuellement :',
+    'link_generated' => 'Nouveau lien généré avec succès !',
+    'network_error' => 'Erreur réseau'
 ];
