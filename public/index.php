@@ -1,11 +1,11 @@
 <?php
 // Application entry point (Front Controller)
 
-// Start session
-session_start();
-
-// Load configuration
+// Load configuration (including composer autoloader)
 require_once __DIR__ . '/../src/config.php';
+
+// Start session AFTER autoloader so that objects in session are unserialized correctly
+session_start();
 
 // Basic autoloader for classes (App Namespace)
 spl_autoload_register(function ($class) {
@@ -123,6 +123,20 @@ if ($route === '' || $route === 'home') {
         echo json_encode(['success' => false]);
     }
     exit;
+} elseif (strpos($route, 'api/passkey/') === 0) {
+    $controller = new \App\Controllers\PasskeyController();
+    if ($route === 'api/passkey/register/challenge') {
+        $controller->apiRegisterChallenge();
+    } elseif ($route === 'api/passkey/register/verify') {
+        $controller->apiRegisterVerify();
+    } elseif ($route === 'api/passkey/login/challenge') {
+        $controller->apiLoginChallenge();
+    } elseif ($route === 'api/passkey/login/verify') {
+        $controller->apiLoginVerify();
+    } else {
+        http_response_code(404);
+        exit;
+    }
 } elseif ($route === 'admin') {
     $controller = new \App\Controllers\AdminController();
     $controller->showAdmin();

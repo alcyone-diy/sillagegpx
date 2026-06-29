@@ -34,3 +34,14 @@ if (file_exists(__DIR__ . '/config.local.php')) {
 // Cloudflare Turnstile (Fallbacks if not defined in config.local.php)
 if (!defined('TURNSTILE_SITE_KEY')) define('TURNSTILE_SITE_KEY', '');
 if (!defined('TURNSTILE_SECRET_KEY')) define('TURNSTILE_SECRET_KEY', '');
+
+// Load Composer autoloader
+if (file_exists(BASE_PATH . '/vendor/autoload.php')) {
+    require_once BASE_PATH . '/vendor/autoload.php';
+}
+
+// WebAuthn Configuration
+define('WEBAUTHN_RP_NAME', 'SillageGPX');
+// RP_ID should be the domain of the site. For localhost testing, use 'localhost'.
+// We attempt to determine it automatically.
+define('WEBAUTHN_RP_ID', $_SERVER['HTTP_HOST'] ?? 'localhost');
