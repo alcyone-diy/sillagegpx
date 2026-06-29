@@ -700,3 +700,53 @@ textarea.form-control {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(20px); }
 }
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border-glass);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 120px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-glass);
+  padding: 0.5rem;
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+/* Bridge the gap to prevent hover from dropping */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  font-weight: 600;
+}
+
+.dropdown-item:hover, .dropdown-item.active {
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+}

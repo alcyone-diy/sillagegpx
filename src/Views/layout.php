@@ -31,11 +31,15 @@
                         <a href="?route=login" class="nav-link btn-primary-sm"><?= __('login') ?></a>
                     <?php endif; ?>
                 <?php endif; ?>
-                <div class="lang-switcher" style="margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--border-glass);">
-                    <?php $currentParams = $_GET; ?>
-                    <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'en'])) ?>" class="nav-link <?= \App\Utils\Translator::getCurrentLang() === 'en' ? 'active text-primary' : 'text-muted' ?>" style="padding: 0 4px;">EN</a>
-                    <span class="text-muted">|</span>
-                    <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'fr'])) ?>" class="nav-link <?= \App\Utils\Translator::getCurrentLang() === 'fr' ? 'active text-primary' : 'text-muted' ?>" style="padding: 0 4px;">FR</a>
+                <div class="dropdown">
+                    <button class="nav-link btn-ghost" style="border: none; cursor: pointer; padding: 0.4rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        🌐 <?= strtoupper(\App\Utils\Translator::getCurrentLang()) ?> ▼
+                    </button>
+                    <div class="dropdown-menu glass">
+                        <?php $currentParams = $_GET; ?>
+                        <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'en'])) ?>" class="dropdown-item <?= \App\Utils\Translator::getCurrentLang() === 'en' ? 'active' : '' ?>">English (EN)</a>
+                        <a href="?<?= http_build_query(array_merge($currentParams, ['lang' => 'fr'])) ?>" class="dropdown-item <?= \App\Utils\Translator::getCurrentLang() === 'fr' ? 'active' : '' ?>">Français (FR)</a>
+                    </div>
                 </div>
             </div>
         </div>
