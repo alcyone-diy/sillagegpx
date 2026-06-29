@@ -34,7 +34,7 @@ ob_start();
                 <label for="reg_password">Password</label>
                 <input type="password" id="reg_password" name="password" required class="form-control glass-input">
             </div>
-            <button type="submit" name="register" class="btn btn-outline btn-block">Create Account</button>
+            <button type="submit" name="register" class="btn btn-primary btn-block">Create Account</button>
         </form>
     </div>
 </div>

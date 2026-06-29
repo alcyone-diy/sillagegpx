@@ -27,7 +27,9 @@
                     <a href="?route=create_trip" class="nav-link btn-primary-sm">+ New Trip</a>
                     <a href="?route=logout" class="nav-link text-muted">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
                 <?php else: ?>
-                    <a href="?route=login" class="nav-link btn-primary-sm">Login</a>
+                    <?php if (($_GET['route'] ?? 'home') !== 'login'): ?>
+                        <a href="?route=login" class="nav-link btn-primary-sm">Login</a>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
