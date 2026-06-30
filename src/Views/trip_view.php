@@ -40,7 +40,7 @@ ob_start();
     <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $trip->user_id): ?>
         <div class="trip-owner-actions">
             <div class="d-flex" style="gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
-                <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars($trip->visibility) ?></span>
+                <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars(__($trip->visibility)) ?></span>
                 <a href="?route=edit_trip&id=<?= $trip->id ?>" class="btn btn-outline btn-sm"><?= __('edit_trip') ?></a>
             </div>
             <?php if ($trip->visibility === 'unlisted'): ?>

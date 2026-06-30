@@ -21,7 +21,7 @@ ob_start();
             <div class="trip-card glass-card" onclick="window.location.href='?route=trip&id=<?= $trip->id ?>'" style="cursor: pointer;">
                 <div class="trip-card-header">
                     <h3 style="margin-bottom: 0; color: var(--accent-primary);"><?= htmlspecialchars($trip->title) ?></h3>
-                    <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars($trip->visibility) ?></span>
+                    <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars(__($trip->visibility)) ?></span>
                 </div>
                 
                 <div class="trip-card-body" style="margin-top: 1rem;">
