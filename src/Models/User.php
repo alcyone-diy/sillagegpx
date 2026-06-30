@@ -15,47 +15,26 @@ class User {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
         $stmt->execute(['username' => $username]);
-        $data = $stmt->fetch();
-        
-        if ($data) {
-            $user = new User();
-            foreach ($data as $key => $value) {
-                $user->$key = $value;
-            }
-            return $user;
-        }
-        return null;
+        $stmt->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $user = $stmt->fetch();
+        return $user ?: null;
     }
     public static function findByEmail(string $email): ?User {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
         $stmt->execute(['email' => $email]);
-        $data = $stmt->fetch();
-        
-        if ($data) {
-            $user = new User();
-            foreach ($data as $key => $value) {
-                $user->$key = $value;
-            }
-            return $user;
-        }
-        return null;
+        $stmt->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $user = $stmt->fetch();
+        return $user ?: null;
     }
 
     public static function findById(int $id): ?User {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare('SELECT * FROM users WHERE id = :id');
         $stmt->execute(['id' => $id]);
-        $data = $stmt->fetch();
-        
-        if ($data) {
-            $user = new User();
-            foreach ($data as $key => $value) {
-                $user->$key = $value;
-            }
-            return $user;
-        }
-        return null;
+        $stmt->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $user = $stmt->fetch();
+        return $user ?: null;
     }
 
     public static function create(string $username, string $email, string $password): ?User {
