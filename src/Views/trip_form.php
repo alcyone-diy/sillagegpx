@@ -206,6 +206,13 @@ ob_start();
             <button type="submit" class="btn btn-primary" style="margin: 0;"><?= $isEdit ? __('save_changes') : __('save_trip') ?></button>
         </div>
     </form>
+    
+    <?php if ($isEdit): ?>
+    <form action="?route=delete_trip" method="POST" style="margin-top: 1rem; text-align: center;" onsubmit="return confirm('<?= addslashes(__('confirm_delete_trip')) ?>');">
+        <input type="hidden" name="trip_id" value="<?= $trip->id ?>">
+        <button type="submit" class="btn" style="background: transparent; color: #dc3545; text-decoration: underline; border: none; padding: 0; cursor: pointer;"><?= __('delete_trip') ?></button>
+    </form>
+    <?php endif; ?>
 </div>
 
 <?php

@@ -78,6 +78,14 @@ if ($route === '' || $route === 'home') {
         http_response_code(405);
         echo "Method Not Allowed";
     }
+} elseif ($route === 'delete_trip') {
+    $controller = new \App\Controllers\TripController();
+    if ($method === 'POST') {
+        $controller->handleDeleteTrip();
+    } else {
+        http_response_code(405);
+        echo "Method Not Allowed";
+    }
 } elseif ($route === 'regenerate_token') {
     $controller = new \App\Controllers\TripController();
     if ($method === 'POST') {

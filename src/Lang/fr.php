@@ -67,6 +67,8 @@ return [
     'cancel' => 'Annuler',
     'save_changes' => 'Enregistrer les modifications',
     'save_trip' => 'Enregistrer la Navigation',
+    'delete_trip' => 'Supprimer la navigation',
+    'confirm_delete_trip' => 'Êtes-vous sûr de vouloir supprimer cette navigation et toutes ses traces GPX ? Cette action est irréversible.',
     'title_placeholder' => 'ex: Croisière d\'été en Bretagne',
     'comment_placeholder' => 'Écrivez vos notes sur cette navigation...',
     'useful_links' => 'Liens Utiles',

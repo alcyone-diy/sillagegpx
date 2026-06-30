@@ -249,6 +249,60 @@ class TripController {
         exit;
     }
 
+    public function handleDeleteTrip() {
+        $userId = $this->requireAuth();
+        $tripId = (int)($_POST['trip_id'] ?? 0);
+        
+        $trip = Trip::findById($tripId);
+        if (!$trip || $trip->user_id !== $userId) {
+            http_response_code(403);
+            die("Access denied.");
+        }
+        
+        // Delete all track files for this trip
+        $steps = TripStep::findByTripId($trip->id);
+        foreach ($steps as $step) {
+            $tracks = GpxTrack::findByTripStepId($step->id);
+            foreach ($tracks as $track) {
+                $gpxFile = GPX_PATH . '/' . $track->file_path;
+                if (file_exists($gpxFile)) {
+                    unlink($gpxFile);
+                }
+            }
+            
+            $jsonFile = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id . '/track_' . $step->id . '.json';
+            if (file_exists($jsonFile)) {
+                unlink($jsonFile);
+            }
+        }
+        
+        // Remove trip directory if it exists and is empty
+        $tripDir = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id;
+        if (is_dir($tripDir)) {
+            $files = array_diff(scandir($tripDir), ['.', '..']);
+            if (empty($files)) {
+                rmdir($tripDir);
+            }
+        }
+        
+        // Remove user directory if it exists and is empty
+        $userDir = GPX_PATH . '/' . $trip->user_id;
+        if (is_dir($userDir)) {
+            $files = array_diff(scandir($userDir), ['.', '..']);
+            if (empty($files)) {
+                rmdir($userDir);
+            }
+        }
+        
+        // Delete from database (Cascade will delete steps, tracks, links)
+        $pdo = \App\Utils\Database::getConnection();
+        $stmt = $pdo->prepare('DELETE FROM trips WHERE id = ?');
+        $stmt->execute([$trip->id]);
+        
+        header('Location: ?route=dashboard');
+        exit;
+    }
+
     public function handleRegenerateToken() {
         $userId = $this->requireAuth();
         

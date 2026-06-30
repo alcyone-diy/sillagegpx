@@ -67,6 +67,8 @@ return [
     'cancel' => 'Cancel',
     'save_changes' => 'Save Changes',
     'save_trip' => 'Save Trip',
+    'delete_trip' => 'Delete Trip',
+    'confirm_delete_trip' => 'Are you sure you want to delete this trip and all its GPX tracks? This cannot be undone.',
     'title_placeholder' => 'e.g., Summer Cruise in Brittany',
     'comment_placeholder' => 'Write your comments about this trip...',
     'useful_links' => 'Useful Links',
