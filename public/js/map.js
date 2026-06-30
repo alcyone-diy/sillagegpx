@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         days.forEach((dayKey, index) => {
             const [y, m, d] = dayKey.split('-');
             const dateObj = new Date(y, m - 1, d);
-            const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            const formattedDate = dateObj.toLocaleDateString(document.documentElement.lang || 'en-US', { weekday: 'short', month: 'short', day: 'numeric' });
             
             const colorRgb = palette[index % palette.length];
             
