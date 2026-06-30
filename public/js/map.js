@@ -142,19 +142,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.getElementById('globalStats').innerHTML = `
             <div class="stat-box">
-                <span class="stat-value">${distanceNm} NM</span>
+                <span class="stat-value">${distanceNm} ${window.TRIP_LANG.distanceUnit || 'NM'}</span>
                 <span class="stat-label">${window.TRIP_LANG.distance || 'Distance'}</span>
             </div>
             <div class="stat-box">
-                <span class="stat-value">${durationHours} h</span>
+                <span class="stat-value">${durationHours} ${window.TRIP_LANG.durationUnit || 'h'}</span>
                 <span class="stat-label">${window.TRIP_LANG.duration || 'Duration'}</span>
             </div>
             <div class="stat-box">
-                <span class="stat-value">${avgSpeed} kts</span>
+                <span class="stat-value">${avgSpeed} ${window.TRIP_LANG.speedUnit || 'kts'}</span>
                 <span class="stat-label">${window.TRIP_LANG.avgSpeed || 'Avg Speed'}</span>
             </div>
             <div class="stat-box">
-                <span class="stat-value">${stats.maxSpeed.toFixed(1)} kts</span>
+                <span class="stat-value">${stats.maxSpeed.toFixed(1)} ${window.TRIP_LANG.speedUnit || 'kts'}</span>
                 <span class="stat-label">${window.TRIP_LANG.maxSpeed || 'Max Speed'}</span>
             </div>
         `;
@@ -280,7 +280,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             mode: 'index',
                             intersect: false,
                             backgroundColor: 'rgba(20, 27, 45, 0.9)',
-                            titleColor: '#fff'
+                            titleColor: '#fff',
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' ' + (window.TRIP_LANG.speedUnit || 'kts');
+                                    }
+                                    return label;
+                                }
+                            }
                         }
                     },
                     scales: {

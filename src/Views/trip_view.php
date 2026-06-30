@@ -70,7 +70,10 @@ ob_start();
             maxSpeed: "<?= __('max_speed') ?>",
             overview: "<?= __('trip_overview') ?>",
             days: "<?= __('days') ?>",
-            day: "<?= __('day') ?>"
+            day: "<?= __('day') ?>",
+            speedUnit: "<?= __('speed_unit') ?>",
+            distanceUnit: "<?= __('distance_unit') ?>",
+            durationUnit: "<?= __('duration_unit') ?>"
         };
     </script>
     
