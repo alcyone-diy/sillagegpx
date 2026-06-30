@@ -217,7 +217,13 @@ class TripController {
             die(json_encode(['error' => 'Access denied']));
         }
         
-        // Delete files
+        // Delete JSON data file first so the directory can be empty
+        $jsonFile = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id . '/track_' . $stepId . '.json';
+        if (file_exists($jsonFile)) {
+            unlink($jsonFile);
+        }
+        
+        // Delete GPX files and empty directories
         $tracks = GpxTrack::findByTripStepId($stepId);
         foreach ($tracks as $track) {
             $gpxFile = GPX_PATH . '/' . $track->file_path;
@@ -232,11 +238,6 @@ class TripController {
                     }
                 }
             }
-        }
-        
-        $jsonFile = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id . '/track_' . $stepId . '.json';
-        if (file_exists($jsonFile)) {
-            unlink($jsonFile);
         }
         
         // Delete from DB
