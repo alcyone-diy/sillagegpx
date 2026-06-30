@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastTime = d.getTime();
 
-            labels.push(d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+            labels.push(d.toLocaleTimeString(document.documentElement.lang || 'en-US', {hour: '2-digit', minute:'2-digit'}));
             Object.keys(datasetsMap).forEach(k => {
                 if (k === p.datasetKey) {
                     datasetsArrayData[k].push(p.v);
