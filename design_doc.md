@@ -106,7 +106,7 @@ The visualization interface for a trip will offer a map (Leaflet), a speed chart
 *   **Theme and Design**: Modern, premium interface, with native Dark Mode support. Use of harmonious palettes (e.g., marine themes, deep blues, slate grays, "Glassmorphism" effects for modals).
 *   **Internationalization (i18n)**: The application fully supports bilingual views (English and French). Language dictionaries are managed centrally, and user preferences are saved via cookies.
 *   **User Dashboard**: List of their trips in the form of elegant cards with visibility badges (Public/Private/Shared link).
-*   **Editing**: Smooth form with drag & drop for GPX track uploads.
+*   **Trip Management & Editing**: Smooth form with drag & drop for GPX track uploads, and the ability to entirely delete a trip (with automatic cleanup of associated files and data).
 *   **Micro-interactions**: Subtle animations on hover over timeline elements and map markers.
 
 ## 6. Deployment & Architecture
