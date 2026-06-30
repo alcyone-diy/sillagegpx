@@ -33,7 +33,8 @@ class TripController {
     }
 
     public function showCreateForm() {
-        $this->requireAuth();
+        $userId = $this->requireAuth();
+        $previousBoatNames = Trip::getPreviousBoatNames($userId);
         require SRC_PATH . '/Views/trip_form.php';
     }
 
@@ -140,6 +141,8 @@ class TripController {
         
         $existingSteps = TripStep::findByTripId($trip->id);
         $existingLinks = TripLink::findByTripId($trip->id);
+        
+        $previousBoatNames = Trip::getPreviousBoatNames($userId);
         
         require SRC_PATH . '/Views/trip_form.php';
     }

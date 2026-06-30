@@ -41,6 +41,43 @@ ob_start();
         margin: 0 !important;
     }
 }
+.autocomplete-wrapper {
+    position: relative;
+}
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.25rem;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md, 8px);
+    box-shadow: var(--shadow-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+.autocomplete-dropdown.show {
+    display: block;
+}
+.autocomplete-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+.autocomplete-item:hover, .autocomplete-item.active {
+    background: var(--bg-glass-hover);
+    color: var(--accent-primary);
+}
 </style>
 
 <div class="form-container">
@@ -63,7 +100,18 @@ ob_start();
             
             <div class="form-group">
                 <label for="boat_name"><?= __('boat_name') ?></label>
-                <input type="text" id="boat_name" name="boat_name" class="form-control glass-input" value="<?= $isEdit ? htmlspecialchars($trip->boat_name ?? '') : '' ?>">
+                <div class="autocomplete-wrapper">
+                    <input type="text" id="boat_name" name="boat_name" class="form-control glass-input" value="<?= $isEdit ? htmlspecialchars($trip->boat_name ?? '') : '' ?>" autocomplete="off">
+                    <?php if (isset($previousBoatNames) && !empty($previousBoatNames)): ?>
+                    <div class="autocomplete-dropdown" id="boatNameDropdown">
+                        <?php foreach ($previousBoatNames as $name): ?>
+                            <div class="autocomplete-item" data-value="<?= htmlspecialchars($name) ?>">
+                                <?= htmlspecialchars($name) ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
             
             <div class="form-group">
@@ -196,6 +244,54 @@ document.addEventListener('DOMContentLoaded', function() {
         linksContainer.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-link')) {
                 e.target.closest('.link-entry').remove();
+            }
+        });
+    }
+
+    const boatNameInput = document.getElementById('boat_name');
+    const boatNameDropdown = document.getElementById('boatNameDropdown');
+    
+    if (boatNameInput && boatNameDropdown) {
+        const items = boatNameDropdown.querySelectorAll('.autocomplete-item');
+        
+        boatNameInput.addEventListener('focus', function() {
+            boatNameDropdown.classList.add('show');
+            filterDropdown();
+        });
+        
+        boatNameInput.addEventListener('input', function() {
+            boatNameDropdown.classList.add('show');
+            filterDropdown();
+        });
+        
+        function filterDropdown() {
+            const val = boatNameInput.value.toLowerCase();
+            let visibleCount = 0;
+            items.forEach(item => {
+                const text = item.getAttribute('data-value').toLowerCase();
+                if (text.includes(val)) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            if (visibleCount === 0) {
+                boatNameDropdown.classList.remove('show');
+            }
+        }
+        
+        items.forEach(item => {
+            item.addEventListener('click', function() {
+                boatNameInput.value = this.getAttribute('data-value');
+                boatNameDropdown.classList.remove('show');
+                boatNameInput.focus();
+            });
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!boatNameInput.contains(e.target) && !boatNameDropdown.contains(e.target)) {
+                boatNameDropdown.classList.remove('show');
             }
         });
     }

@@ -91,4 +91,11 @@ class Trip {
         $stmt = $pdo->query("SELECT * FROM trips WHERE visibility IN ('public', 'unlisted') ORDER BY start_date DESC");
         return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
     }
+
+    public static function getPreviousBoatNames(int $user_id): array {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare('SELECT DISTINCT boat_name FROM trips WHERE user_id = :user_id AND boat_name IS NOT NULL AND boat_name != "" ORDER BY boat_name ASC');
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
 }
