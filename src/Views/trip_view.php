@@ -24,8 +24,7 @@ ob_start();
         
         <?php if (!empty($links)): ?>
             <div class="trip-links mt-3 pt-3" style="border-top: 1px solid rgba(0,0,0,0.05);">
-                <h4 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; color: var(--text-color); opacity: 0.7; font-weight: 600;"><?= __('useful_links') ?></h4>
-                <div class="d-flex" style="flex-wrap: wrap; gap: 0.5rem;">
+                <div class="d-flex" style="flex-wrap: wrap; gap: 0.5rem; padding-top: 0.5rem;">
                     <?php foreach ($links as $link): ?>
                         <a href="<?= htmlspecialchars($link->url) ?>" target="_blank" rel="noopener noreferrer" class="badge badge-link hover-lift" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); color: var(--text-color); border-radius: 20px; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.6;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
