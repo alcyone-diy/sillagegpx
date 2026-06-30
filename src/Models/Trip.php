@@ -64,8 +64,7 @@ class Trip {
 
     public function update(): void {
         $pdo = Database::getConnection();
-        $this->updated_at = date('Y-m-d H:i:s');
-        $stmt = $pdo->prepare('UPDATE trips SET title = :title, start_date = :start_date, end_date = :end_date, boat_name = :boat_name, comment = :comment, visibility = :visibility, unlisted_token = :unlisted_token, updated_at = :updated_at WHERE id = :id');
+        $stmt = $pdo->prepare('UPDATE trips SET title = :title, start_date = :start_date, end_date = :end_date, boat_name = :boat_name, comment = :comment, visibility = :visibility, unlisted_token = :unlisted_token, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
         $stmt->execute([
             'title' => $this->title,
             'start_date' => $this->start_date,
@@ -74,7 +73,6 @@ class Trip {
             'comment' => $this->comment,
             'visibility' => $this->visibility,
             'unlisted_token' => $this->unlisted_token,
-            'updated_at' => $this->updated_at,
             'id' => $this->id
         ]);
     }
