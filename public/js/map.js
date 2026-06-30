@@ -175,8 +175,20 @@ document.addEventListener('DOMContentLoaded', () => {
             datasetsArrayPoints[k] = [];
         });
 
+        let lastTime = null;
+
         allSpeedPoints.forEach(p => {
             const d = new Date(p.t);
+            
+            if (lastTime && (d.getTime() - lastTime > 30 * 60 * 1000)) {
+                labels.push('...');
+                Object.keys(datasetsMap).forEach(k => {
+                    datasetsArrayData[k].push(null);
+                    datasetsArrayPoints[k].push(null);
+                });
+            }
+            lastTime = d.getTime();
+
             labels.push(d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
             Object.keys(datasetsMap).forEach(k => {
                 if (k === p.datasetKey) {
