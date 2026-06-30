@@ -33,6 +33,15 @@ ob_start();
                         <p class="text-sm"><strong><?= __('date') ?>:</strong> <?= htmlspecialchars($trip->start_date) ?> 
                         <?php if ($trip->end_date && $trip->end_date != $trip->start_date) echo ' ' . __('to') . ' ' . htmlspecialchars($trip->end_date); ?>
                         </p>
+                        <?php
+                        $daysCount = 1;
+                        if ($trip->end_date) {
+                            $start = new DateTime($trip->start_date);
+                            $end = new DateTime($trip->end_date);
+                            $daysCount = $start->diff($end)->days + 1;
+                        }
+                        ?>
+                        <p class="text-sm"><strong><?= __('duration') ?>:</strong> <?= $daysCount ?> <?= $daysCount > 1 ? __('days') : __('day') ?></p>
                     <?php endif; ?>
                     
                     <div class="trip-stats text-muted text-sm mt-2">
