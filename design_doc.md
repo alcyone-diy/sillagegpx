@@ -36,20 +36,20 @@ From the design phase, the application is intended to be multi-user and finely m
 
 ### `trip_steps` Table (Navigation steps)
 *   `id` (PK, INT)
-*   `trip_id` (FK, INT) -> `trips.id`
+*   `trip_id` (FK, INT) -> `trips.id` (ON DELETE CASCADE)
 *   `title` (VARCHAR) - e.g.: "Tuesday" or "Outward Crossing"
 *   `order_index` (INT) - Order of the step
 *   `created_at` (DATETIME)
 
 ### `trip_links` Table (Links associated with the trip)
 *   `id` (PK, INT)
-*   `trip_id` (FK, INT) -> `trips.id`
+*   `trip_id` (FK, INT) -> `trips.id` (ON DELETE CASCADE)
 *   `url` (VARCHAR)
 *   `label` (VARCHAR)
 
 ### `gpx_tracks` Table (Associated tracks)
 *   `id` (PK, INT)
-*   `trip_step_id` (FK, INT) -> `trip_steps.id`
+*   `trip_step_id` (FK, INT) -> `trip_steps.id` (ON DELETE CASCADE)
 *   `file_path` (VARCHAR) - File path stored on the server.
 *   `start_time` (DATETIME) - Extracted during upload.
 *   `end_time` (DATETIME) - Extracted during upload.
@@ -57,12 +57,29 @@ From the design phase, the application is intended to be multi-user and finely m
 *   `duration_seconds` (INT) - Calculated during upload.
 *   `avg_speed_knots` (FLOAT) - Calculated average speed.
 *   `max_speed_knots` (FLOAT) - Calculated max speed.
+*   `created_at` (DATETIME)
+
+### `login_attempts` Table (Brute-force protection)
+*   `id` (PK, INT)
+*   `ip_address` (VARCHAR)
+*   `attempt_time` (DATETIME)
+
+### `user_passkeys` Table (WebAuthn / Passkeys)
+*   `id` (PK, INT)
+*   `user_id` (FK, INT) -> `users.id` (ON DELETE CASCADE)
+*   `credential_id` (TEXT)
+*   `public_key` (TEXT)
+*   `user_handle` (TEXT)
+*   `sign_count` (INT)
+*   `created_at` (DATETIME)
 
 ## 4. Processing Logic and Features
 
 ### A. Security & Authentication
 1.  **Authentication**: Uses modern standard passwords + **WebAuthn (Passkeys)** support for passwordless login using TouchID, FaceID, or hardware keys (via `lbuchs/webauthn`).
-2.  **Visibility Management**:
+2.  **Brute-Force Protection**: IP-based rate limiting (max 5 failed attempts per 15 minutes) tracked in the `login_attempts` table.
+3.  **Bot Protection**: Cloudflare Turnstile CAPTCHA integration during registration to prevent spam.
+4.  **Visibility Management**:
     *   **Public**: The trip appears on the user's public profile. Accessible via the classic trip ID (e.g., `/trip.php?id=123`).
     *   **Private**: Only the owner (logged in) can see it. Anyone else gets a 403 error.
     *   **Unlisted**: The trip does not appear on public lists. It is only accessible via a unique token (e.g., `/trip.php?token=abc123xyz`). 
