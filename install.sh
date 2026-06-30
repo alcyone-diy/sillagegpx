@@ -25,11 +25,11 @@ fi
 
 # 4. Initialize the database
 echo "🗄️ Checking database..."
-if [ ! -f "db/sillage.sqlite" ]; then
+if [ ! -f "db/journal.sqlite" ]; then
     if command -v sqlite3 &> /dev/null; then
         echo "Creating SQLite database..."
-        sqlite3 db/sillage.sqlite < db/schema.sql
-        chmod 666 db/sillage.sqlite
+        sqlite3 db/journal.sqlite < db/schema.sql
+        chmod 666 db/journal.sqlite
         echo "✅ Database initialized."
     else
         echo "⚠️ WARNING: 'sqlite3' is not installed."
@@ -37,7 +37,7 @@ if [ ! -f "db/sillage.sqlite" ]; then
     fi
 else
     echo "ℹ️ Database already exists. No action required."
-    chmod 666 db/sillage.sqlite
+    chmod 666 db/journal.sqlite
 fi
 
 # 5. Local configuration
