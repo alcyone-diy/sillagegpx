@@ -79,6 +79,7 @@ return [
     
     // Trip View
     'copy_link' => 'Copier le lien',
+    'copied' => 'Copié !',
     'regenerate' => 'Régénérer',
     'no_tracks' => 'Aucune trace GPX disponible pour cette navigation.',
     'nav_days' => 'Jours de Navigation',

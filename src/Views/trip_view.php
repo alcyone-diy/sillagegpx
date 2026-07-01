@@ -105,7 +105,9 @@ ob_start();
 <?php endif; ?>
 
 <?php
-$extraJs = <<<JS
+$content = ob_get_clean();
+ob_start();
+?>
 <script>
 function copyShareUrl() {
     var btn = document.getElementById("copyBtn");
@@ -114,10 +116,10 @@ function copyShareUrl() {
     var url = window.location.origin + window.location.pathname + '?route=trip&token=' + token;
     
     var showSuccess = function() {
-        btn.innerText = "Copied!";
+        btn.innerText = <?= json_encode(__('copied')) ?>;
         btn.classList.add("glass-success");
         setTimeout(() => {
-            btn.innerText = "Copy Link";
+            btn.innerText = <?= json_encode(__('copy_link')) ?>;
             btn.classList.remove("glass-success");
         }, 2000);
     };
@@ -174,7 +176,7 @@ function regenerateToken(tripId) {
 }
 </script>
 <script src="js/map.js"></script>
-JS;
-$content = ob_get_clean();
+<?php
+$extraJs = ob_get_clean();
 require __DIR__ . '/layout.php';
 ?>
