@@ -702,19 +702,19 @@ textarea.form-control {
 }
 
 .glass-error {
-  background: rgba(239, 68, 68, 0.5);
-  border: 1px solid rgba(239, 68, 68, 0.6);
+  background: rgba(239, 68, 68, 0.5) !important;
+  border: 1px solid rgba(239, 68, 68, 0.6) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .glass-success {
-  background: rgba(16, 185, 129, 0.5);
-  border: 1px solid rgba(16, 185, 129, 0.6);
+  background: rgba(16, 185, 129, 0.5) !important;
+  border: 1px solid rgba(16, 185, 129, 0.6) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /* Footer */
