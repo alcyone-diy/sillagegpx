@@ -117,6 +117,7 @@ return [
     'passkey_registered' => 'Passkey enregistré avec succès !',
     'error' => 'Erreur :',
     'webauthn_error' => 'Erreur WebAuthn :',
+    'webauthn_not_allowed' => 'Aucune clé d\'accès (passkey) trouvée sur cet appareil ou action annulée.',
     'copy_failed' => 'La copie a échoué. Veuillez copier ce lien manuellement :',
     'link_generated' => 'Nouveau lien généré avec succès !',
     'network_error' => 'Erreur réseau',

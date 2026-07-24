@@ -102,7 +102,11 @@ document.getElementById('btn-login-passkey').addEventListener('click', async () 
             alert(<?= json_encode(__('error')) ?> + " " + verifyResult.error);
         }
     } catch (e) {
-        alert(<?= json_encode(__('webauthn_error')) ?> + " " + e.message);
+        if (e.name === 'NotAllowedError') {
+            alert(<?= json_encode(__('webauthn_not_allowed')) ?>);
+        } else {
+            alert(<?= json_encode(__('webauthn_error')) ?> + " " + e.message);
+        }
     }
 });
 </script>
