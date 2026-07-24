@@ -77,6 +77,20 @@ class ProfileController {
         exit;
     }
 
+    public function renamePasskey() {
+        $passkeyId = $_POST['passkey_id'] ?? null;
+        $newName = trim($_POST['name'] ?? '');
+
+        // Enforce strict name constraints before updating (prevent empty string bypass)
+        if ($passkeyId && !empty($newName)) {
+            $pdo = Database::getConnection();
+            $stmt = $pdo->prepare("UPDATE user_passkeys SET name = ? WHERE id = ? AND user_id = ?");
+            $stmt->execute([$newName, $passkeyId, $_SESSION['user_id']]);
+        }
+        header('Location: ?route=profile');
+        exit;
+    }
+
     private function showProfileWithError($error) {
         $user = User::findById($_SESSION['user_id']);
         $pdo = Database::getConnection();

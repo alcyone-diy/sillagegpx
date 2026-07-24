@@ -141,6 +141,14 @@ if ($route === '' || $route === 'home') {
         }
         exit;
     }
+    
+    if ($route === 'api/passkey/rename') {
+        $controller = new \App\Controllers\ProfileController();
+        if ($method === 'POST') {
+            $controller->renamePasskey();
+        }
+        exit;
+    }
 
     $controller = new \App\Controllers\PasskeyController();
     if ($route === 'api/passkey/register/challenge') {
