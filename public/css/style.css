@@ -267,6 +267,29 @@ h4 { font-size: 1.1rem; font-weight: 600; }
   font-size: 0.875rem;
 }
 
+.btn-xs {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.btn-glass-error {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #fff;
+}
+.btn-glass-error:hover {
+  background: rgba(255, 0, 0, 0.3);
+}
+
+.btn-glass-neutral {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.btn-glass-neutral:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .btn-lg {
   padding: 0.8rem 2rem;
   font-size: 1.1rem;

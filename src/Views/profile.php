@@ -50,10 +50,23 @@ ob_start();
                             <strong><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
                             <div class="text-sm text-muted"><?= __('added_on') ?> <?= htmlspecialchars($pk->created_at) ?></div>
                         </div>
-                        <form action="?route=api/passkey/delete" method="POST" onsubmit="return confirm('<?= __('confirm_delete_passkey') ?>');" style="margin: 0;">
-                            <input type="hidden" name="passkey_id" value="<?= $pk->id ?>">
-                            <button type="submit" class="btn btn-error" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; background: rgba(255, 0, 0, 0.2); border: 1px solid rgba(255, 0, 0, 0.3); color: #fff; cursor: pointer; border-radius: 4px;"><?= __('delete') ?></button>
-                        </form>
+                        <div style="display: flex; gap: 0.5rem; margin: 0;">
+                            <!-- Rename Form -->
+                            <form action="?route=api/passkey/rename" method="POST" onsubmit="return promptForNewPasskeyName(this);" style="margin: 0;">
+                                <input type="hidden" name="passkey_id" value="<?= htmlspecialchars($pk->id) ?>">
+                                <input type="hidden" name="name" value="">
+                                <button type="submit" class="btn btn-xs btn-glass-neutral">
+                                    <?= __('rename') ?>
+                                </button>
+                            </form>
+                            <!-- Delete Form -->
+                            <form action="?route=api/passkey/delete" method="POST" onsubmit="return confirm('<?= __('confirm_delete_passkey') ?>');" style="margin: 0;">
+                                <input type="hidden" name="passkey_id" value="<?= $pk->id ?>">
+                                <button type="submit" class="btn btn-xs btn-glass-error">
+                                    <?= __('delete') ?>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -99,6 +112,17 @@ function arrayBufferToBase64(buffer) {
         binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
+}
+
+// Prompt for rename and inject value into hidden form field before submission
+function promptForNewPasskeyName(form) {
+    let newName = prompt(<?= json_encode(__('passkey_rename_prompt')) ?>);
+    if (!newName || newName.trim() === '') {
+        alert(<?= json_encode(__('passkey_name_required')) ?>);
+        return false;
+    }
+    form.elements['name'].value = newName.trim();
+    return true;
 }
 
 document.getElementById('btn-register-passkey')?.addEventListener('click', async () => {
