@@ -46,7 +46,8 @@ ob_start();
                 <?php foreach ($passkeys as $pk): ?>
                     <div class="passkey-item" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: rgba(0,0,0,0.1); border-radius: 8px;">
                         <div>
-                            <strong>Passkey</strong>
+                            <!-- Safely display the user-provided passkey name (fallback to 'Passkey' just in case) -->
+                            <strong><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
                             <div class="text-sm text-muted"><?= __('added_on') ?> <?= htmlspecialchars($pk->created_at) ?></div>
                         </div>
                         <form action="?route=api/passkey/delete" method="POST" onsubmit="return confirm('<?= __('confirm_delete_passkey') ?>');" style="margin: 0;">
