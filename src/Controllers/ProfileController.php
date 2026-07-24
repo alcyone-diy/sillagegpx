@@ -21,7 +21,7 @@ class ProfileController {
         }
 
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT id, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
 
@@ -80,7 +80,7 @@ class ProfileController {
     private function showProfileWithError($error) {
         $user = User::findById($_SESSION['user_id']);
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT id, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
         require SRC_PATH . '/Views/profile.php';
@@ -89,7 +89,7 @@ class ProfileController {
     private function showProfileWithSuccess($success) {
         $user = User::findById($_SESSION['user_id']);
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT id, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
         require SRC_PATH . '/Views/profile.php';
