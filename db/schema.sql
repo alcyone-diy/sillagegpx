@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS user_passkeys (
     public_key TEXT NOT NULL,
     user_handle TEXT NOT NULL,
     sign_count INTEGER DEFAULT 0,
+    name VARCHAR(255) NOT NULL CHECK(name <> ''),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
