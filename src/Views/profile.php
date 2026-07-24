@@ -102,6 +102,13 @@ function arrayBufferToBase64(buffer) {
 
 document.getElementById('btn-register-passkey')?.addEventListener('click', async () => {
     try {
+        // Enforce passkey naming before generating the challenge to avoid orphaned flows
+        let passkeyName = prompt(<?= json_encode(__('passkey_name_prompt')) ?>);
+        if (!passkeyName || passkeyName.trim() === '') {
+            alert(<?= json_encode(__('passkey_name_required')) ?>);
+            return;
+        }
+
         const res = await fetch('?route=api/passkey/register/challenge');
         const options = await res.json();
         
@@ -121,7 +128,8 @@ document.getElementById('btn-register-passkey')?.addEventListener('click', async
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 clientDataJSON: clientDataJSON,
-                attestationObject: attestationObject
+                attestationObject: attestationObject,
+                name: passkeyName.trim()
             })
         });
 

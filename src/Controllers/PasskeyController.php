@@ -76,6 +76,13 @@ class PasskeyController {
 
         $clientDataJSON = base64_decode($input['clientDataJSON'] ?? '');
         $attestationObject = base64_decode($input['attestationObject'] ?? '');
+        $passkeyName = trim($input['name'] ?? '');
+
+        // Enforce strict name constraint matching the database schema (NOT NULL, CHECK name <> '')
+        if (empty($passkeyName)) {
+            $this->jsonError('Passkey name is required');
+        }
+
         $challenge = $_SESSION['webauthn_challenge'];
 
         try {
@@ -84,7 +91,7 @@ class PasskeyController {
             
             // Save to database
             $pdo = Database::getConnection();
-            $stmt = $pdo->prepare("INSERT INTO user_passkeys (user_id, credential_id, public_key, user_handle, sign_count) VALUES (?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO user_passkeys (user_id, credential_id, public_key, user_handle, sign_count, name) VALUES (?, ?, ?, ?, ?, ?)");
             
             // Credential ID is binary, we can store as base64 or hex
             $credentialIdHex = bin2hex($data->credentialId);
@@ -93,7 +100,8 @@ class PasskeyController {
                 $credentialIdHex,
                 $data->credentialPublicKey,
                 (string)$_SESSION['user_id'],
-                $data->signatureCounter ?? 0
+                $data->signatureCounter ?? 0,
+                $passkeyName
             ]);
 
             unset($_SESSION['webauthn_challenge']);

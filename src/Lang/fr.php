@@ -109,6 +109,8 @@ return [
     'confirm_delete_passkey' => 'Supprimer ce Passkey ?',
     'delete' => 'Supprimer',
     'add_passkey' => 'Ajouter un nouveau Passkey',
+    'passkey_name_prompt' => 'Entrez un nom pour cet appareil (ex: Mon iPhone, PC Bureau) :',
+    'passkey_name_required' => 'Le nom du passkey est obligatoire.',
     'username_required' => 'Le nom d\'utilisateur est requis.',
     'profile_updated' => 'Profil mis à jour avec succès.',
     'update_failed' => 'Erreur lors de la mise à jour (nom d\'utilisateur peut-être déjà pris).',
