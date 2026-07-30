@@ -169,5 +169,5 @@ if ($route === '' || $route === 'home') {
     require SRC_PATH . '/Views/about.php';
 } else {
     http_response_code(404);
-    echo "Page not found (404): " . htmlspecialchars($route);
+    require SRC_PATH . '/Views/404.php';
 }

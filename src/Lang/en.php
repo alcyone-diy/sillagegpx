@@ -120,5 +120,9 @@ return [
     'copy_failed' => 'Copy failed. Please manually copy this link:',
     'link_generated' => 'New link generated successfully!',
     'network_error' => 'Network error',
-    'login_with_passkey' => 'Login with Passkey'
+    'login_with_passkey' => 'Login with Passkey',
+    'error_404' => 'Error 404',
+    'page_not_found' => 'Page not found',
+    'page_not_found_desc' => 'Sorry, the page you are looking for does not exist or has been moved.',
+    'back_to_home' => 'Back to home'
 ];

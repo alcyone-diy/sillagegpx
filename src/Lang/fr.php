@@ -120,5 +120,9 @@ return [
     'copy_failed' => 'La copie a échoué. Veuillez copier ce lien manuellement :',
     'link_generated' => 'Nouveau lien généré avec succès !',
     'network_error' => 'Erreur réseau',
-    'login_with_passkey' => 'Se connecter avec Passkey'
+    'login_with_passkey' => 'Se connecter avec Passkey',
+    'error_404' => 'Erreur 404',
+    'page_not_found' => 'Page introuvable',
+    'page_not_found_desc' => 'Désolé, la page que vous recherchez n\'existe pas ou a été déplacée.',
+    'back_to_home' => 'Retour à l\'accueil'
 ];
