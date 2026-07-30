@@ -5,6 +5,8 @@
 require_once __DIR__ . '/../src/config.php';
 
 // Start session AFTER autoloader so that objects in session are unserialized correctly
+session_set_cookie_params(SESSION_LIFETIME);
+ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
 session_start();
 
 // Basic autoloader for classes (App Namespace)

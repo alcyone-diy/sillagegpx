@@ -16,6 +16,9 @@ define('GPX_PATH', DATA_PATH . '/trips');
 define('DB_PATH', BASE_PATH . '/db/journal.sqlite');
 define('SCHEMA_PATH', BASE_PATH . '/db/schema.sql');
 
+// Session Configuration
+define('SESSION_LIFETIME', 30 * 24 * 60 * 60); // 30 days in seconds
+
 // GPX Parsing Settings (Intervals in seconds)
 define('STATS_CALC_INTERVAL', 600); // 10 minutes for speed/distance calculations
 define('MAP_POINT_INTERVAL', 60);   // 1 minute for map rendering points
