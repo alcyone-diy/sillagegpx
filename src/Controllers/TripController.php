@@ -92,7 +92,7 @@ class TripController {
                 $tmpName = $files['tmp_name'][$i];
                 $name = basename($files['name'][$i]);
                 
-                $safeName = $trip->user_id . '/' . $trip->id . '/' . time() . '_' . preg_replace('/[^a-zA-Z0-9.-]/', '_', $name);
+                $safeName = $trip->user_id . '/' . $trip->id . '/' . uniqid() . '_' . preg_replace('/[^a-zA-Z0-9.-]/', '_', $name);
                 $destination = GPX_PATH . '/' . $safeName;
                 
                 if (move_uploaded_file($tmpName, $destination)) {
