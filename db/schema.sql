@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS gpx_tracks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     trip_step_id INTEGER NOT NULL,
     file_path VARCHAR(512) NOT NULL,
+    file_hash VARCHAR(64) UNIQUE,
+    track_uuid VARCHAR(36) UNIQUE,
     start_time DATETIME,
     end_time DATETIME,
     distance_meters REAL,
@@ -69,6 +71,15 @@ CREATE TABLE IF NOT EXISTS user_passkeys (
     user_handle TEXT NOT NULL,
     sign_count INTEGER DEFAULT 0,
     name VARCHAR(255) NOT NULL CHECK(name <> ''),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS api_tokens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    device_name VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
