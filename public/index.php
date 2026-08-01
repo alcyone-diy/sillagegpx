@@ -133,6 +133,22 @@ if ($route === '' || $route === 'home') {
         echo json_encode(['success' => false]);
     }
     exit;
+} elseif ($route === 'api/trips') {
+    $controller = new \App\Controllers\ApiController();
+    if ($method === 'GET') {
+        $controller->listTrips();
+    } elseif ($method === 'POST') {
+        $controller->createTrip();
+    }
+    exit;
+} elseif ($route === 'api/tracks/upload') {
+    if ($method === 'POST') {
+        $controller = new \App\Controllers\ApiController();
+        $controller->uploadTrack();
+    } else {
+        http_response_code(405);
+    }
+    exit;
 } elseif (strpos($route, 'api/auth/') === 0) {
     if ($route === 'api/auth/authorize') {
         $controller = new \App\Controllers\ApiAuthController();
