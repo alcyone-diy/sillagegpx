@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS api_tokens (
     user_id INTEGER NOT NULL,
     token VARCHAR(64) NOT NULL UNIQUE,
     device_name VARCHAR(255),
+    last_used_at DATETIME DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
