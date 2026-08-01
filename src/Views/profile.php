@@ -49,9 +49,9 @@ ob_start();
                             <!-- Safely display the user-provided passkey name (fallback to 'Passkey' just in case) -->
                             <strong><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
                             <div class="text-sm text-muted">
-                                <?= __('added_on') ?> <?= htmlspecialchars($pk->created_at) ?>
+                                <?= __('added_on') ?> <?= htmlspecialchars(substr($pk->created_at, 0, 16)) ?>
                                 <?php if (!empty($pk->last_used_at)): ?>
-                                    <br><?= __('last_used') ?> <?= htmlspecialchars($pk->last_used_at) ?>
+                                    <br><?= __('last_used') ?> <?= htmlspecialchars(substr($pk->last_used_at, 0, 16)) ?>
                                 <?php endif; ?>
                             </div>
                         </div>
