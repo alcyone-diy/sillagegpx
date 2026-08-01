@@ -44,33 +44,32 @@ ob_start();
         <?php if (!empty($passkeys)): ?>
             <div class="passkeys-list mt-4" style="display: flex; flex-direction: column; gap: 0.5rem;">
                 <?php foreach ($passkeys as $pk): ?>
-                    <div class="passkey-item" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: rgba(0,0,0,0.1); border-radius: 8px;">
-                        <div>
-                            <!-- Safely display the user-provided passkey name (fallback to 'Passkey' just in case) -->
-                            <strong><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
-                            <div class="text-sm text-muted">
-                                <?= __('added_on') ?> <?= htmlspecialchars(substr($pk->created_at, 0, 16)) ?>
-                                <?php if (!empty($pk->last_used_at)): ?>
-                                    <br><?= __('last_used') ?> <?= htmlspecialchars(substr($pk->last_used_at, 0, 16)) ?>
-                                <?php endif; ?>
+                    <div class="passkey-item" style="display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem; background: rgba(0,0,0,0.15); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                            <strong style="font-size: 1.1rem;"><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
+                            <div style="display: flex; gap: 0.5rem; margin: 0;">
+                                <!-- Rename Form -->
+                                <form action="?route=api/passkey/rename" method="POST" class="form-rename-passkey" style="margin: 0;">
+                                    <input type="hidden" name="passkey_id" value="<?= htmlspecialchars($pk->id) ?>">
+                                    <input type="hidden" name="name" value="">
+                                    <button type="submit" class="btn btn-xs btn-glass-neutral">
+                                        <?= __('rename') ?>
+                                    </button>
+                                </form>
+                                <!-- Delete Form -->
+                                <form action="?route=api/passkey/delete" method="POST" class="form-delete-passkey" style="margin: 0;">
+                                    <input type="hidden" name="passkey_id" value="<?= $pk->id ?>">
+                                    <button type="submit" class="btn btn-xs btn-glass-error">
+                                        <?= __('delete') ?>
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 0.5rem; margin: 0;">
-                            <!-- Rename Form -->
-                            <form action="?route=api/passkey/rename" method="POST" class="form-rename-passkey" style="margin: 0;">
-                                <input type="hidden" name="passkey_id" value="<?= htmlspecialchars($pk->id) ?>">
-                                <input type="hidden" name="name" value="">
-                                <button type="submit" class="btn btn-xs btn-glass-neutral">
-                                    <?= __('rename') ?>
-                                </button>
-                            </form>
-                            <!-- Delete Form -->
-                            <form action="?route=api/passkey/delete" method="POST" class="form-delete-passkey" style="margin: 0;">
-                                <input type="hidden" name="passkey_id" value="<?= $pk->id ?>">
-                                <button type="submit" class="btn btn-xs btn-glass-error">
-                                    <?= __('delete') ?>
-                                </button>
-                            </form>
+                        <div class="text-sm text-muted" style="display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                            <div><?= __('added_on') ?> <strong><?= htmlspecialchars(substr($pk->created_at, 0, 16)) ?></strong></div>
+                            <?php if (!empty($pk->last_used_at)): ?>
+                                <div><?= __('last_used') ?> <strong><?= htmlspecialchars(substr($pk->last_used_at, 0, 16)) ?></strong></div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
