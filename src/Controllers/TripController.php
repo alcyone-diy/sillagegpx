@@ -145,7 +145,8 @@ class TripController {
         $trip = Trip::findById((int)$id);
         if (!$trip || $trip->user_id !== $userId) {
             http_response_code(403);
-            die("Access denied.");
+            require SRC_PATH . '/Views/403.php';
+            exit;
         }
         
         $existingSteps = TripStep::findByTripId($trip->id);
@@ -347,15 +348,23 @@ class TripController {
         
         if (!$trip) {
             http_response_code(404);
-            die("Trip not found.");
+            require SRC_PATH . '/Views/404.php';
+            exit;
         }
         
         // Visibility checks
         $isOwner = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $trip->user_id;
         
         if ($trip->visibility === 'private' && !$isOwner) {
-            http_response_code(403);
-            die("Access denied.");
+            if (!isset($_SESSION['user_id'])) {
+                $target = '?route=trip&' . ($id ? 'id='.$id : 'token='.$token);
+                header('Location: ?route=login&redirect=' . urlencode($target));
+                exit;
+            } else {
+                http_response_code(403);
+                require SRC_PATH . '/Views/403.php';
+                exit;
+            }
         }
         
         if (!$isOwner) {
