@@ -14,10 +14,22 @@ function customPrompt(message, defaultValue = '') {
         modal.style.display = 'flex';
         inputEl.focus();
 
+        const handleKey = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                btnOk.click();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                btnCancel.click();
+            }
+        };
+        window.addEventListener('keydown', handleKey);
+
         const cleanup = () => {
             modal.style.display = 'none';
             btnOk.onclick = null;
             btnCancel.onclick = null;
+            window.removeEventListener('keydown', handleKey);
         };
 
         btnOk.onclick = () => { resolve(inputEl.value); cleanup(); };
@@ -35,12 +47,22 @@ function customAlert(message) {
 
         msgEl.textContent = message;
         modal.style.display = 'flex';
+        
+        const handleKey = (e) => {
+            if (e.key === 'Enter' || e.key === 'Escape') {
+                e.preventDefault();
+                btnOk.click();
+            }
+        };
+        window.addEventListener('keydown', handleKey);
 
-        btnOk.onclick = () => {
+        const cleanup = () => {
             modal.style.display = 'none';
             btnOk.onclick = null;
-            resolve();
+            window.removeEventListener('keydown', handleKey);
         };
+
+        btnOk.onclick = () => { resolve(); cleanup(); };
     });
 }
 
@@ -56,10 +78,22 @@ function customConfirm(message) {
         msgEl.textContent = message;
         modal.style.display = 'flex';
 
+        const handleKey = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                btnOk.click();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                btnCancel.click();
+            }
+        };
+        window.addEventListener('keydown', handleKey);
+
         const cleanup = () => {
             modal.style.display = 'none';
             btnOk.onclick = null;
             btnCancel.onclick = null;
+            window.removeEventListener('keydown', handleKey);
         };
 
         btnOk.onclick = () => { resolve(true); cleanup(); };
