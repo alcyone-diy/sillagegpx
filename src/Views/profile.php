@@ -52,7 +52,7 @@ ob_start();
                         </div>
                         <div style="display: flex; gap: 0.5rem; margin: 0;">
                             <!-- Rename Form -->
-                            <form action="?route=api/passkey/rename" method="POST" onsubmit="return promptForNewPasskeyName(this);" style="margin: 0;">
+                            <form action="?route=api/passkey/rename" method="POST" class="form-rename-passkey" style="margin: 0;">
                                 <input type="hidden" name="passkey_id" value="<?= htmlspecialchars($pk->id) ?>">
                                 <input type="hidden" name="name" value="">
                                 <button type="submit" class="btn btn-xs btn-glass-neutral">
@@ -60,7 +60,7 @@ ob_start();
                                 </button>
                             </form>
                             <!-- Delete Form -->
-                            <form action="?route=api/passkey/delete" method="POST" onsubmit="return confirm('<?= __('confirm_delete_passkey') ?>');" style="margin: 0;">
+                            <form action="?route=api/passkey/delete" method="POST" class="form-delete-passkey" style="margin: 0;">
                                 <input type="hidden" name="passkey_id" value="<?= $pk->id ?>">
                                 <button type="submit" class="btn btn-xs btn-glass-error">
                                     <?= __('delete') ?>
@@ -73,9 +73,6 @@ ob_start();
         <?php endif; ?>
 
         <button id="btn-register-passkey" class="btn btn-secondary mt-4"><?= __('add_passkey') ?></button>
-    </div>
-</div>
-
 <?php ob_start(); ?>
 <script>
 function recursiveBase64StrToArrayBuffer(obj) {
@@ -114,23 +111,38 @@ function arrayBufferToBase64(buffer) {
     return window.btoa(binary);
 }
 
-// Prompt for rename and inject value into hidden form field before submission
-function promptForNewPasskeyName(form) {
-    let newName = prompt(<?= json_encode(__('passkey_rename_prompt')) ?>);
-    if (!newName || newName.trim() === '') {
-        alert(<?= json_encode(__('passkey_name_required')) ?>);
-        return false;
-    }
-    form.elements['name'].value = newName.trim();
-    return true;
-}
+// Rename Form interceptor
+document.querySelectorAll('.form-rename-passkey').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let newName = await customPrompt(<?= json_encode(__('passkey_rename_prompt')) ?>);
+        if (newName === null) return;
+        if (newName.trim() === '') {
+            await customAlert(<?= json_encode(__('passkey_name_required')) ?>);
+            return;
+        }
+        form.elements['name'].value = newName.trim();
+        form.submit();
+    });
+});
+
+// Delete Form interceptor
+document.querySelectorAll('.form-delete-passkey').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let confirmed = await customConfirm(<?= json_encode(__('confirm_delete_passkey')) ?>);
+        if (confirmed) {
+            form.submit();
+        }
+    });
+});
 
 document.getElementById('btn-register-passkey')?.addEventListener('click', async () => {
     try {
-        // Enforce passkey naming before generating the challenge to avoid orphaned flows
-        let passkeyName = prompt(<?= json_encode(__('passkey_name_prompt')) ?>);
-        if (!passkeyName || passkeyName.trim() === '') {
-            alert(<?= json_encode(__('passkey_name_required')) ?>);
+        let passkeyName = await customPrompt(<?= json_encode(__('passkey_name_prompt')) ?>);
+        if (passkeyName === null) return;
+        if (passkeyName.trim() === '') {
+            await customAlert(<?= json_encode(__('passkey_name_required')) ?>);
             return;
         }
 
@@ -138,7 +150,7 @@ document.getElementById('btn-register-passkey')?.addEventListener('click', async
         const options = await res.json();
         
         if (options.error) {
-            alert(options.error);
+            await customAlert(options.error);
             return;
         }
 
@@ -160,13 +172,18 @@ document.getElementById('btn-register-passkey')?.addEventListener('click', async
 
         const verifyResult = await verifyRes.json();
         if (verifyResult.success) {
-            alert(<?= json_encode(__('passkey_registered')) ?>);
+            await customAlert(<?= json_encode(__('passkey_registered')) ?>);
             window.location.reload();
         } else {
-            alert(<?= json_encode(__('error')) ?> + " " + verifyResult.error);
+            await customAlert(<?= json_encode(__('error')) ?> + " " + verifyResult.error);
         }
     } catch (e) {
-        alert(<?= json_encode(__('webauthn_error')) ?> + " " + e.message);
+        // Si l'utilisateur annule simplement la fenêtre du système (navigateur/OS), on ne fait rien
+        if (e.name === 'NotAllowedError') {
+            console.log('Enregistrement annulé par l\'utilisateur.');
+        } else {
+            await customAlert(<?= json_encode(__('webauthn_error')) ?> + " " + e.message);
+        }
     }
 });
 </script>

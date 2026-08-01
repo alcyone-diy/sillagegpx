@@ -1,3 +1,72 @@
+// --- Custom Modals Logic ---
+function customPrompt(message, defaultValue = '') {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('custom-prompt-modal');
+        if (!modal) return resolve(prompt(message, defaultValue)); // fallback
+
+        const msgEl = document.getElementById('custom-prompt-message');
+        const inputEl = document.getElementById('custom-prompt-input');
+        const btnOk = document.getElementById('custom-prompt-ok');
+        const btnCancel = document.getElementById('custom-prompt-cancel');
+
+        msgEl.textContent = message;
+        inputEl.value = defaultValue;
+        modal.style.display = 'flex';
+        inputEl.focus();
+
+        const cleanup = () => {
+            modal.style.display = 'none';
+            btnOk.onclick = null;
+            btnCancel.onclick = null;
+        };
+
+        btnOk.onclick = () => { resolve(inputEl.value); cleanup(); };
+        btnCancel.onclick = () => { resolve(null); cleanup(); };
+    });
+}
+
+function customAlert(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('custom-alert-modal');
+        if (!modal) { alert(message); return resolve(); } // fallback
+
+        const msgEl = document.getElementById('custom-alert-message');
+        const btnOk = document.getElementById('custom-alert-ok');
+
+        msgEl.textContent = message;
+        modal.style.display = 'flex';
+
+        btnOk.onclick = () => {
+            modal.style.display = 'none';
+            btnOk.onclick = null;
+            resolve();
+        };
+    });
+}
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('custom-confirm-modal');
+        if (!modal) return resolve(confirm(message)); // fallback
+
+        const msgEl = document.getElementById('custom-confirm-message');
+        const btnOk = document.getElementById('custom-confirm-ok');
+        const btnCancel = document.getElementById('custom-confirm-cancel');
+
+        msgEl.textContent = message;
+        modal.style.display = 'flex';
+
+        const cleanup = () => {
+            modal.style.display = 'none';
+            btnOk.onclick = null;
+            btnCancel.onclick = null;
+        };
+
+        btnOk.onclick = () => { resolve(true); cleanup(); };
+        btnCancel.onclick = () => { resolve(false); cleanup(); };
+    });
+}
+
 // Generic app interactions (modals, etc.)
 document.addEventListener('DOMContentLoaded', () => {
     // Add subtle animations or handle flash messages here
@@ -86,9 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle deletion of existing tracks via AJAX
     const deleteExistingBtns = document.querySelectorAll('.delete-existing-track');
     deleteExistingBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', async function(e) {
             e.preventDefault();
-            if (!confirm('Are you sure you want to delete this track? This action cannot be undone.')) {
+            const confirmed = await customConfirm('Are you sure you want to delete this track? This action cannot be undone.');
+            if (!confirmed) {
                 return;
             }
             
@@ -103,17 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ step_id: stepId })
             })
             .then(response => response.json())
-            .then(data => {
+            .then(async data => {
                 if (data.success) {
                     // Remove from DOM
                     listItem.style.opacity = '0';
                     setTimeout(() => listItem.remove(), 300);
                 } else {
-                    alert('Error: ' + (data.error || 'Failed to delete track.'));
+                    await customAlert('Error: ' + (data.error || 'Failed to delete track.'));
                 }
             })
-            .catch(err => {
-                alert('Network error while deleting track.');
+            .catch(async err => {
+                await customAlert('Network error while deleting track.');
             });
         });
     });

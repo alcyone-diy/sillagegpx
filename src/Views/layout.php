@@ -113,6 +113,37 @@
         </p>
     </footer>
 
+    <!-- Custom Global Modals -->
+    <div id="custom-prompt-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div class="glass-card" style="width: 320px; padding: 20px;">
+            <h4 id="custom-prompt-message" style="margin-top: 0;"></h4>
+            <input type="text" id="custom-prompt-input" class="form-control glass-input" style="width: 100%; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button id="custom-prompt-cancel" class="btn btn-secondary"><?= __('cancel') ?></button>
+                <button id="custom-prompt-ok" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div class="glass-card" style="width: 320px; padding: 20px;">
+            <h4 id="custom-alert-message" style="margin-top: 0;"></h4>
+            <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                <button id="custom-alert-ok" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-confirm-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div class="glass-card" style="width: 320px; padding: 20px;">
+            <h4 id="custom-confirm-message" style="margin-top: 0;"></h4>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                <button id="custom-confirm-cancel" class="btn btn-secondary"><?= __('cancel') ?></button>
+                <button id="custom-confirm-ok" class="btn btn-glass-error"><?= __('delete') ?></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
