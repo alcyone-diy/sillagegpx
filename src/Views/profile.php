@@ -77,6 +77,59 @@ ob_start();
         <?php endif; ?>
 
         <button id="btn-register-passkey" class="btn btn-secondary mt-4"><?= __('add_passkey') ?></button>
+    </div>
+
+    <!-- API Tokens -->
+    <div class="glass-card">
+        <h3><?= __('api_tokens_title') ?></h3>
+        <p class="text-sm text-muted"><?= __('api_tokens_desc') ?></p>
+        
+        <?php if (isset($_SESSION['new_api_token'])): ?>
+            <div class="alert alert-success mt-3" style="word-break: break-all;">
+                <strong><?= __('api_token_created') ?></strong><br>
+                <?= htmlspecialchars($_SESSION['new_api_token_name']) ?>: <br>
+                <code style="display: block; padding: 0.5rem; background: rgba(0,0,0,0.2); margin-top: 0.5rem; border-radius: 4px;"><?= htmlspecialchars($_SESSION['new_api_token']) ?></code>
+                <p class="text-sm mt-2 mb-0 text-warning"><?= __('api_token_warning') ?></p>
+            </div>
+            <?php 
+                unset($_SESSION['new_api_token']); 
+                unset($_SESSION['new_api_token_name']);
+            ?>
+        <?php endif; ?>
+
+        <?php if (!empty($apiTokens)): ?>
+            <div class="passkeys-list mt-4" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <?php foreach ($apiTokens as $token): ?>
+                    <div class="passkey-item" style="display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem; background: rgba(0,0,0,0.15); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                            <strong style="font-size: 1.1rem;"><?= htmlspecialchars($token->device_name) ?></strong>
+                            <div style="display: flex; gap: 0.5rem; margin: 0;">
+                                <!-- Delete Form -->
+                                <form action="?route=api/token/delete" method="POST" class="form-delete-token" style="margin: 0;">
+                                    <input type="hidden" name="token_id" value="<?= $token->id ?>">
+                                    <button type="submit" class="btn btn-xs btn-glass-error">
+                                        <?= __('delete') ?>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="text-sm text-muted" style="display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                            <div><?= __('added_on') ?> <strong><?= htmlspecialchars(substr($token->created_at, 0, 16)) ?></strong></div>
+                            <?php if (!empty($token->last_used_at)): ?>
+                                <div><?= __('last_used') ?> <strong><?= htmlspecialchars(substr($token->last_used_at, 0, 16)) ?></strong></div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <form action="?route=api/token/create" method="POST" class="mt-4" style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="form-create-token">
+            <input type="text" name="device_name" placeholder="<?= __('token_name_prompt') ?>" required class="form-control glass-input" style="flex: 1; min-width: 200px;">
+            <button type="submit" class="btn btn-secondary"><?= __('add_api_token') ?></button>
+        </form>
+    </div>
+</div>
 <?php ob_start(); ?>
 <script>
 function recursiveBase64StrToArrayBuffer(obj) {
@@ -135,6 +188,17 @@ document.querySelectorAll('.form-delete-passkey').forEach(form => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         let confirmed = await customConfirm(<?= json_encode(__('confirm_delete_passkey')) ?>);
+        if (confirmed) {
+            form.submit();
+        }
+    });
+});
+
+// Delete Token Form interceptor
+document.querySelectorAll('.form-delete-token').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let confirmed = await customConfirm(<?= json_encode(__('confirm_delete_token')) ?>);
         if (confirmed) {
             form.submit();
         }

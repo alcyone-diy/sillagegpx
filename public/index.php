@@ -133,6 +133,22 @@ if ($route === '' || $route === 'home') {
         echo json_encode(['success' => false]);
     }
     exit;
+} elseif (strpos($route, 'api/token/') === 0) {
+    if ($route === 'api/token/create') {
+        $controller = new \App\Controllers\ProfileController();
+        if ($method === 'POST') {
+            $controller->createApiToken();
+        }
+        exit;
+    }
+    
+    if ($route === 'api/token/delete') {
+        $controller = new \App\Controllers\ProfileController();
+        if ($method === 'POST') {
+            $controller->deleteApiToken();
+        }
+        exit;
+    }
 } elseif (strpos($route, 'api/passkey/') === 0) {
     if ($route === 'api/passkey/delete') {
         $controller = new \App\Controllers\ProfileController();

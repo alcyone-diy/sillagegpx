@@ -114,6 +114,16 @@ return [
     'passkey_name_prompt' => 'Entrez un nom pour cet appareil (ex: Mon iPhone, PC Bureau) :',
     'passkey_rename_prompt' => 'Entrez le nouveau nom pour cette clé d\'accès :',
     'passkey_name_required' => 'Le nom de la clé d\'accès est obligatoire.',
+    
+    // API Tokens
+    'api_tokens_title' => 'Jetons d\'API',
+    'api_tokens_desc' => 'Gérez vos jetons d\'accès pour utiliser l\'API de SillageGPX depuis d\'autres applications.',
+    'add_api_token' => 'Créer un jeton',
+    'token_name_prompt' => 'Nom de l\'application (ex: Script Python)',
+    'confirm_delete_token' => 'Supprimer ce jeton d\'API ?',
+    'api_token_created' => 'Nouveau jeton créé avec succès !',
+    'api_token_warning' => 'Attention : Copiez ce jeton maintenant. Il ne sera plus affiché par la suite.',
+
     'username_required' => 'Le nom d\'utilisateur est requis.',
     'profile_updated' => 'Profil mis à jour avec succès.',
     'update_failed' => 'Erreur lors de la mise à jour (nom d\'utilisateur peut-être déjà pris).',

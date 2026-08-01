@@ -114,6 +114,16 @@ return [
     'passkey_name_prompt' => 'Enter a name for this device (e.g. My iPhone, Work PC):',
     'passkey_rename_prompt' => 'Enter the new name for this passkey:',
     'passkey_name_required' => 'Passkey name is required.',
+    
+    // API Tokens
+    'api_tokens_title' => 'API Tokens',
+    'api_tokens_desc' => 'Manage your access tokens to use the SillageGPX API from other applications.',
+    'add_api_token' => 'Create a token',
+    'token_name_prompt' => 'Application name (e.g. Python Script)',
+    'confirm_delete_token' => 'Delete this API token?',
+    'api_token_created' => 'New token successfully created!',
+    'api_token_warning' => 'Warning: Copy this token now. It will not be shown again.',
+
     'username_required' => 'Username is required.',
     'profile_updated' => 'Profile updated successfully.',
     'update_failed' => 'Update failed (username might already be taken).',

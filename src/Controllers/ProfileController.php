@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\ApiToken;
 use App\Utils\Database;
 
 class ProfileController {
@@ -24,6 +25,8 @@ class ProfileController {
         $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at, last_used_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
+
+        $apiTokens = ApiToken::findByUserId($user->id);
 
         require SRC_PATH . '/Views/profile.php';
     }
@@ -77,6 +80,28 @@ class ProfileController {
         exit;
     }
 
+    public function createApiToken() {
+        $deviceName = trim($_POST['device_name'] ?? '');
+        if (!empty($deviceName)) {
+            $token = ApiToken::create($_SESSION['user_id'], $deviceName);
+            if ($token) {
+                $_SESSION['new_api_token'] = $token;
+                $_SESSION['new_api_token_name'] = $deviceName;
+            }
+        }
+        header('Location: ?route=profile');
+        exit;
+    }
+
+    public function deleteApiToken() {
+        $tokenId = $_POST['token_id'] ?? null;
+        if ($tokenId) {
+            ApiToken::delete($tokenId, $_SESSION['user_id']);
+        }
+        header('Location: ?route=profile');
+        exit;
+    }
+
     public function renamePasskey() {
         $passkeyId = $_POST['passkey_id'] ?? null;
         $newName = trim($_POST['name'] ?? '');
@@ -97,6 +122,7 @@ class ProfileController {
         $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at, last_used_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        $apiTokens = ApiToken::findByUserId($user->id);
         require SRC_PATH . '/Views/profile.php';
     }
 
@@ -106,6 +132,7 @@ class ProfileController {
         $stmt = $pdo->prepare("SELECT id, name, credential_id, created_at, last_used_at FROM user_passkeys WHERE user_id = ? ORDER BY created_at DESC");
         $stmt->execute([$user->id]);
         $passkeys = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        $apiTokens = ApiToken::findByUserId($user->id);
         require SRC_PATH . '/Views/profile.php';
     }
 }
