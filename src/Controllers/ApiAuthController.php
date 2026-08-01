@@ -12,11 +12,14 @@ class ApiAuthController {
      */
     public function authorize() {
         $deviceName = trim($_GET['device_name'] ?? 'Sillage iOS');
-        $redirectUri = trim($_GET['redirect_uri'] ?? 'sillage://auth');
+        $redirectUri = trim($_GET['redirect_uri'] ?? '');
         
         // 1. If not logged in, redirect to login page (which will redirect back here upon success)
         if (!isset($_SESSION['user_id'])) {
-            $target = '?route=api/auth/authorize&device_name=' . urlencode($deviceName) . '&redirect_uri=' . urlencode($redirectUri);
+            $target = '?route=api/auth/authorize&device_name=' . urlencode($deviceName);
+            if ($redirectUri !== '') {
+                $target .= '&redirect_uri=' . urlencode($redirectUri);
+            }
             header('Location: ?route=login&redirect=' . urlencode($target));
             exit;
         }
@@ -37,9 +40,13 @@ class ApiAuthController {
         }
 
         if ($token) {
-            // 4. Redirect to the provided redirect_uri with the token
-            $separator = (strpos($redirectUri, '?') !== false) ? '&' : '?';
-            header('Location: ' . $redirectUri . $separator . 'token=' . urlencode($token));
+            // 4. Redirect to the provided redirect_uri with the token, or profile if none
+            if ($redirectUri === '') {
+                header('Location: ?route=profile');
+            } else {
+                $separator = (strpos($redirectUri, '?') !== false) ? '&' : '?';
+                header('Location: ' . $redirectUri . $separator . 'token=' . urlencode($token));
+            }
             exit;
         } else {
             http_response_code(500);
