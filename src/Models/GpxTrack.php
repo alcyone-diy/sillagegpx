@@ -8,6 +8,8 @@ class GpxTrack {
     public int $id;
     public int $trip_step_id;
     public string $file_path;
+    public ?string $file_hash;
+    public ?string $track_uuid;
     public ?string $start_time;
     public ?string $end_time;
     public ?float $distance_meters;
@@ -23,18 +25,26 @@ class GpxTrack {
         return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 
-    public static function create(int $trip_step_id, string $file_path, array $stats): void {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare('INSERT INTO gpx_tracks (trip_step_id, file_path, start_time, end_time, distance_meters, duration_seconds, avg_speed_knots, max_speed_knots) VALUES (:trip_step_id, :file_path, :start_time, :end_time, :distance_meters, :duration_seconds, :avg_speed_knots, :max_speed_knots)');
-        $stmt->execute([
-            'trip_step_id' => $trip_step_id,
-            'file_path' => $file_path,
-            'start_time' => $stats['start_time'] ?? null,
-            'end_time' => $stats['end_time'] ?? null,
-            'distance_meters' => $stats['distance_meters'] ?? null,
-            'duration_seconds' => $stats['duration_seconds'] ?? null,
-            'avg_speed_knots' => $stats['avg_speed_knots'] ?? null,
-            'max_speed_knots' => $stats['max_speed_knots'] ?? null
-        ]);
+    public static function create(int $trip_step_id, string $file_path, array $stats): bool {
+        try {
+            $pdo = Database::getConnection();
+            $stmt = $pdo->prepare('INSERT INTO gpx_tracks (trip_step_id, file_path, file_hash, track_uuid, start_time, end_time, distance_meters, duration_seconds, avg_speed_knots, max_speed_knots) VALUES (:trip_step_id, :file_path, :file_hash, :track_uuid, :start_time, :end_time, :distance_meters, :duration_seconds, :avg_speed_knots, :max_speed_knots)');
+            $stmt->execute([
+                'trip_step_id' => $trip_step_id,
+                'file_path' => $file_path,
+                'file_hash' => $stats['file_hash'] ?? null,
+                'track_uuid' => $stats['track_uuid'] ?? null,
+                'start_time' => $stats['start_time'] ?? null,
+                'end_time' => $stats['end_time'] ?? null,
+                'distance_meters' => $stats['distance_meters'] ?? null,
+                'duration_seconds' => $stats['duration_seconds'] ?? null,
+                'avg_speed_knots' => $stats['avg_speed_knots'] ?? null,
+                'max_speed_knots' => $stats['max_speed_knots'] ?? null
+            ]);
+            return true;
+        } catch (\PDOException $e) {
+            // Ignore duplicate unique constraints (hash or uuid)
+            return false;
+        }
     }
 }

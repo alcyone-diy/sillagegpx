@@ -101,21 +101,30 @@ class TripController {
                         $stepTitle = pathinfo($name, PATHINFO_FILENAME);
                         $step = TripStep::create($trip->id, $stepTitle, $order++);
                         
-                        GpxTrack::create($step->id, $safeName, $stats);
+                        $trackCreated = GpxTrack::create($step->id, $safeName, $stats);
                         
-                        // Save downsampled data for frontend in the trip directory
-                        $jsonFile = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id . '/track_' . $step->id . '.json';
-                        file_put_contents($jsonFile, json_encode([
-                            'map_points' => $stats['map_points'],
-                            'speed_points' => $stats['speed_points']
-                        ]));
-                        
-                        // Update trip start/end date
-                        if (!$tripStartDate || $stats['start_time'] < $tripStartDate) {
-                            $tripStartDate = $stats['start_time'];
-                        }
-                        if (!$tripEndDate || $stats['end_time'] > $tripEndDate) {
-                            $tripEndDate = $stats['end_time'];
+                        if ($trackCreated) {
+                            // Save downsampled data for frontend in the trip directory
+                            $jsonFile = GPX_PATH . '/' . $trip->user_id . '/' . $trip->id . '/track_' . $step->id . '.json';
+                            file_put_contents($jsonFile, json_encode([
+                                'map_points' => $stats['map_points'],
+                                'speed_points' => $stats['speed_points']
+                            ]));
+                            
+                            // Update trip start/end date
+                            if (!$tripStartDate || $stats['start_time'] < $tripStartDate) {
+                                $tripStartDate = $stats['start_time'];
+                            }
+                            if (!$tripEndDate || $stats['end_time'] > $tripEndDate) {
+                                $tripEndDate = $stats['end_time'];
+                            }
+                        } else {
+                            // Track creation failed (duplicate file hash or UUID)
+                            // Clean up the orphaned step and uploaded file
+                            $pdo = \App\Utils\Database::getConnection();
+                            $pdo->prepare('DELETE FROM trip_steps WHERE id = ?')->execute([$step->id]);
+                            unlink($destination);
+                            $order--; // Revert order increment
                         }
                     }
                 }

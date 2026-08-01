@@ -13,9 +13,17 @@ class GpxParser {
             return null;
         }
 
-        $xml = simplexml_load_file($filePath);
+        $fileContent = file_get_contents($filePath);
+        $fileHash = hash('sha256', $fileContent);
+
+        $xml = simplexml_load_string($fileContent);
         if ($xml === false || !isset($xml->trk)) {
             return null;
+        }
+
+        $trackUuid = null;
+        if (preg_match('/<sillage:uuid>\s*([^\s<]+)\s*<\/sillage:uuid>/i', $fileContent, $matches)) {
+            $trackUuid = $matches[1];
         }
 
         $segments = [];
@@ -124,6 +132,8 @@ class GpxParser {
         }
 
         return [
+            'file_hash' => $fileHash,
+            'track_uuid' => $trackUuid,
             'start_time' => date('Y-m-d H:i:s', $overallStartTime),
             'end_time' => date('Y-m-d H:i:s', $overallEndTime),
             'distance_meters' => round($totalDistance, 2),
