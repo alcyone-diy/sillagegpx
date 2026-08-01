@@ -6,7 +6,7 @@ ob_start();
 <div class="auth-container">
     <div class="auth-box glass-card">
         <h2><?= __('welcome_back') ?></h2>
-        <form action="?route=login" method="POST" class="auth-form">
+        <form action="?route=login<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>" method="POST" class="auth-form">
             <div class="form-group">
                 <label for="email"><?= __('email') ?></label>
                 <input type="email" id="email" name="email" required class="form-control glass-input">
@@ -97,7 +97,9 @@ document.getElementById('btn-login-passkey').addEventListener('click', async () 
 
         const verifyResult = await verifyRes.json();
         if (verifyResult.success) {
-            window.location.href = '?route=dashboard';
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTarget = urlParams.get('redirect');
+            window.location.href = redirectTarget ? redirectTarget : '?route=dashboard';
         } else {
             alert(<?= json_encode(__('error')) ?> + " " + verifyResult.error);
         }
@@ -114,7 +116,7 @@ document.getElementById('btn-login-passkey').addEventListener('click', async () 
 
     <div class="auth-box glass-card">
         <h2><?= __('new_to_site') ?></h2>
-        <form action="?route=login" method="POST" class="auth-form">
+        <form action="?route=login<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>" method="POST" class="auth-form">
             <div class="form-group">
                 <label for="reg_username"><?= __('username') ?></label>
                 <input type="text" id="reg_username" name="username" required class="form-control glass-input">

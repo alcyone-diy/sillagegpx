@@ -133,6 +133,12 @@ if ($route === '' || $route === 'home') {
         echo json_encode(['success' => false]);
     }
     exit;
+} elseif (strpos($route, 'api/auth/') === 0) {
+    if ($route === 'api/auth/authorize') {
+        $controller = new \App\Controllers\ApiAuthController();
+        $controller->authorize();
+        exit;
+    }
 } elseif (strpos($route, 'api/token/') === 0) {
     if ($route === 'api/token/create') {
         $controller = new \App\Controllers\ProfileController();

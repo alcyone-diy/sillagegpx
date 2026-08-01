@@ -42,7 +42,8 @@ class AuthController {
             $_SESSION['user_id'] = $user->id;
             $_SESSION['username'] = $user->username;
             
-            header('Location: ?route=dashboard');
+            $redirect = $_GET['redirect'] ?? '?route=dashboard';
+            header('Location: ' . $redirect);
             exit;
         } else {
             // Failure: log this attempt
@@ -97,7 +98,8 @@ class AuthController {
         if ($user) {
             $_SESSION['user_id'] = $user->id;
             $_SESSION['username'] = $user->username;
-            header('Location: ?route=dashboard');
+            $redirect = $_GET['redirect'] ?? '?route=dashboard';
+            header('Location: ' . $redirect);
             exit;
         } else {
             $error = __('user_exists');
