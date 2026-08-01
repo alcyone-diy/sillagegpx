@@ -166,6 +166,10 @@ class PasskeyController {
             // Login successful
             $user = User::findById($credential->user_id);
             if ($user) {
+                // Update last used timestamp
+                $updateStmt = $pdo->prepare("UPDATE user_passkeys SET last_used_at = CURRENT_TIMESTAMP WHERE credential_id = ?");
+                $updateStmt->execute([$credentialIdHex]);
+
                 $_SESSION['user_id'] = $user->id;
                 $_SESSION['username'] = $user->username;
                 unset($_SESSION['webauthn_challenge']);

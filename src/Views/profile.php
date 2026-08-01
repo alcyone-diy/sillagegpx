@@ -48,7 +48,12 @@ ob_start();
                         <div>
                             <!-- Safely display the user-provided passkey name (fallback to 'Passkey' just in case) -->
                             <strong><?= htmlspecialchars($pk->name ?? 'Passkey') ?></strong>
-                            <div class="text-sm text-muted"><?= __('added_on') ?> <?= htmlspecialchars($pk->created_at) ?></div>
+                            <div class="text-sm text-muted">
+                                <?= __('added_on') ?> <?= htmlspecialchars($pk->created_at) ?>
+                                <?php if (!empty($pk->last_used_at)): ?>
+                                    <br><?= __('last_used') ?> <?= htmlspecialchars($pk->last_used_at) ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div style="display: flex; gap: 0.5rem; margin: 0;">
                             <!-- Rename Form -->

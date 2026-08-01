@@ -106,6 +106,7 @@ return [
     'passkeys_title' => 'Clés d\'accès',
     'passkeys_desc' => 'Connectez-vous sans mot de passe à l\'aide de TouchID, FaceID ou de votre appareil.',
     'added_on' => 'Ajouté le',
+    'last_used' => 'Dernière utilisation :',
     'confirm_delete_passkey' => 'Supprimer cette clé d\'accès ?',
     'delete' => 'Supprimer',
     'rename' => 'Renommer',
