@@ -104,7 +104,7 @@ function customConfirm(message) {
 // Generic app interactions (modals, etc.)
 document.addEventListener('DOMContentLoaded', () => {
     // Add subtle animations or handle flash messages here
-    const alerts = document.querySelectorAll('.alert');
+    const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
     alerts.forEach(alert => {
         setTimeout(() => {
             alert.style.opacity = '0';

@@ -36,4 +36,11 @@ class ApiToken {
         $stmt = $pdo->prepare("DELETE FROM api_tokens WHERE id = ? AND user_id = ?");
         return $stmt->execute([$tokenId, $userId]);
     }
+
+    public static function nameExists($userId, $deviceName) {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM api_tokens WHERE user_id = ? AND device_name = ?");
+        $stmt->execute([$userId, $deviceName]);
+        return $stmt->fetchColumn() > 0;
+    }
 }

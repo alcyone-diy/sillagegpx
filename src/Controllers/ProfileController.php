@@ -82,12 +82,21 @@ class ProfileController {
 
     public function createApiToken() {
         $deviceName = trim($_POST['device_name'] ?? '');
-        if (!empty($deviceName)) {
-            $token = ApiToken::create($_SESSION['user_id'], $deviceName);
-            if ($token) {
-                $_SESSION['new_api_token'] = $token;
-                $_SESSION['new_api_token_name'] = $deviceName;
-            }
+        
+        if (empty($deviceName)) {
+            $this->showProfileWithError(__('token_name_required'));
+            return;
+        }
+
+        if (ApiToken::nameExists($_SESSION['user_id'], $deviceName)) {
+            $this->showProfileWithError(__('token_name_exists'));
+            return;
+        }
+
+        $token = ApiToken::create($_SESSION['user_id'], $deviceName);
+        if ($token) {
+            $_SESSION['new_api_token'] = $token;
+            $_SESSION['new_api_token_name'] = $deviceName;
         }
         header('Location: ?route=profile');
         exit;

@@ -85,10 +85,13 @@ ob_start();
         <p class="text-sm text-muted"><?= __('api_tokens_desc') ?></p>
         
         <?php if (isset($_SESSION['new_api_token'])): ?>
-            <div class="alert alert-success mt-3" style="word-break: break-all;">
+            <div class="alert alert-success alert-permanent mt-3" style="word-break: break-all;">
                 <strong><?= __('api_token_created') ?></strong><br>
                 <?= htmlspecialchars($_SESSION['new_api_token_name']) ?>: <br>
-                <code style="display: block; padding: 0.5rem; background: rgba(0,0,0,0.2); margin-top: 0.5rem; border-radius: 4px;"><?= htmlspecialchars($_SESSION['new_api_token']) ?></code>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
+                    <code id="new-api-token" style="flex: 1; display: block; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; margin: 0;"><?= htmlspecialchars($_SESSION['new_api_token']) ?></code>
+                    <button type="button" class="btn btn-primary btn-sm" style="margin: 0; white-space: nowrap;" onclick="navigator.clipboard.writeText(document.getElementById('new-api-token').innerText); this.innerText = <?= htmlspecialchars(json_encode(__('copied'))) ?>; setTimeout(() => this.innerText = <?= htmlspecialchars(json_encode(__('copy'))) ?>, 2000);"><?= __('copy') ?></button>
+                </div>
                 <p class="text-sm mt-2 mb-0 text-warning"><?= __('api_token_warning') ?></p>
             </div>
             <?php 
