@@ -105,7 +105,7 @@ class Database {
             return $applied;
         }
 
-        $files = glob($migrationsDir . '/*.sql');
+        $files = glob($migrationsDir . '/*.sql') ?: [];
         sort($files);
 
         foreach ($files as $file) {
