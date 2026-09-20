@@ -51,6 +51,8 @@ return [
     'general_details' => 'General Details',
     'trip_title' => 'Trip Title',
     'boat_name' => 'Boat Name',
+    'is_skipper' => 'Skipper',
+    'is_skipper_desc' => 'Check if you were the skipper for this trip',
     'captains_log' => 'Captain\'s Log',
     'tracks_gpx' => 'Tracks (GPX)',
     'existing_tracks' => 'Existing Tracks:',

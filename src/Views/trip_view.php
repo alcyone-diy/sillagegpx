@@ -1,19 +1,27 @@
 <?php
 $pageTitle = htmlspecialchars($trip->title) . ' - SillageGPX';
+$isOwner = isset($_SESSION['user_id']) && (int)$_SESSION['user_id'] === (int)$trip->user_id;
 ob_start();
 ?>
 
 <div class="trip-header glass-card">
     <div class="trip-header-content">
         <h1 class="trip-title"><?= htmlspecialchars($trip->title) ?></h1>
-        <div class="trip-meta text-muted">
+        <div class="trip-meta text-muted d-flex align-items-center" style="flex-wrap: wrap; gap: 0.5rem;">
             <?php if ($trip->boat_name): ?>
                 <span>⛵ <?= htmlspecialchars($trip->boat_name) ?></span> &bull; 
             <?php endif; ?>
             <?php if ($trip->start_date): ?>
                 <span>📅 <?= htmlspecialchars($trip->start_date) ?></span> &bull; 
             <?php endif; ?>
-            <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span>
+            <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span> &bull;
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; cursor: <?= $isOwner ? 'pointer' : 'default' ?>; user-select: none;" title="<?= $isOwner ? 'Cliquer pour modifier le statut chef de bord' : '' ?>">
+                <input type="checkbox" id="skipperCheckbox" <?= $trip->isSkipper() ? 'checked' : '' ?> <?= $isOwner ? '' : 'disabled' ?> style="width: 1rem; height: 1rem; accent-color: var(--accent-primary); cursor: <?= $isOwner ? 'pointer' : 'default' ?>;" <?= $isOwner ? 'onchange="toggleSkipperStatus(this.checked)"' : '' ?>>
+                <span>🧑‍✈️ <?= __('is_skipper') ?></span>
+            </label>
+            <?php if ($isOwner): ?>
+                <span id="skipperFeedback" style="display: none; font-size: 0.85rem; color: #28a745; font-weight: bold;">✓</span>
+            <?php endif; ?>
         </div>
         
         <?php if ($trip->comment): ?>
@@ -173,6 +181,31 @@ function regenerateToken(tripId) {
         }
     })
     .catch(err => alert(<?= json_encode(__('network_error')) ?>));
+}
+
+function toggleSkipperStatus(isChecked) {
+    const feedback = document.getElementById('skipperFeedback');
+    fetch('?route=api/toggle_skipper', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trip_id: <?= (int)$trip->id ?>, is_skipper: isChecked ? 1 : 0 })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            if (feedback) {
+                feedback.style.display = 'inline';
+                setTimeout(() => { feedback.style.display = 'none'; }, 2000);
+            }
+        } else {
+            alert(data.error || 'Update failed');
+            document.getElementById('skipperCheckbox').checked = !isChecked;
+        }
+    })
+    .catch(err => {
+        alert(<?= json_encode(__('network_error')) ?>);
+        document.getElementById('skipperCheckbox').checked = !isChecked;
+    });
 }
 </script>
 <script src="js/map.js"></script>

@@ -45,8 +45,9 @@ class TripController {
         $boatName = $_POST['boat_name'] ?? null;
         $comment = $_POST['comment'] ?? null;
         $visibility = $_POST['visibility'] ?? 'private';
+        $isSkipper = isset($_POST['is_skipper']);
         
-        $trip = Trip::create($userId, $title, null, null, $boatName, $comment, $visibility);
+        $trip = Trip::create($userId, $title, null, null, $boatName, $comment, $visibility, $isSkipper);
         
         if ($trip) {
             // Handle Links
@@ -171,6 +172,7 @@ class TripController {
         $trip->boat_name = $_POST['boat_name'] ?? null;
         $trip->comment = $_POST['comment'] ?? null;
         $trip->visibility = $_POST['visibility'] ?? $trip->visibility;
+        $trip->is_skipper = isset($_POST['is_skipper']);
         
         // If it changes to unlisted and didn't have a token, generate one
         if ($trip->visibility === 'unlisted' && empty($trip->unlisted_token)) {
@@ -416,6 +418,27 @@ class TripController {
         }
         http_response_code(404);
         echo json_encode(['error' => 'Not found']);
+        exit;
+    }
+
+    public function handleToggleSkipper() {
+        $userId = $this->requireAuth();
+        
+        $data = json_decode(file_get_contents('php://input'), true);
+        $tripId = (int)($data['trip_id'] ?? 0);
+        $isSkipper = !empty($data['is_skipper']);
+        
+        $trip = Trip::findById($tripId);
+        if (!$trip || $trip->user_id !== $userId) {
+            http_response_code(403);
+            die(json_encode(['error' => 'Access denied']));
+        }
+        
+        $trip->is_skipper = $isSkipper;
+        $trip->update();
+        
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'is_skipper' => $trip->isSkipper()]);
         exit;
     }
 }

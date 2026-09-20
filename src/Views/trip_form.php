@@ -114,6 +114,16 @@ ob_start();
                 </div>
             </div>
             
+            <div class="form-group mb-3">
+                <label class="d-flex align-items-center" style="gap: 0.6rem; cursor: pointer; user-select: none;">
+                    <input type="checkbox" name="is_skipper" value="1" <?= (!$isEdit || $trip->isSkipper()) ? 'checked' : '' ?> style="width: 1.25rem; height: 1.25rem; accent-color: var(--accent-primary); cursor: pointer;">
+                    <div>
+                        <strong>🧑‍✈️ <?= __('is_skipper') ?></strong>
+                        <div class="text-sm text-muted" style="font-weight: normal;"><?= __('is_skipper_desc') ?></div>
+                    </div>
+                </label>
+            </div>
+            
             <div class="form-group">
                 <label for="comment"><?= __('captains_log') ?></label>
                 <textarea id="comment" name="comment" rows="5" class="form-control glass-input" placeholder="<?= __('comment_placeholder') ?>"><?= $isEdit ? htmlspecialchars($trip->comment ?? '') : '' ?></textarea>

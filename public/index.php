@@ -36,7 +36,7 @@ function __(string $key): string {
 
 // Simple routing based on the 'route' parameter provided by .htaccess
 $route = isset($_GET['route']) ? rtrim($_GET['route'], '/') : '';
-$method = $_SERVER['REQUEST_METHOD'];
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Basic router
 if ($route === '' || $route === 'home') {
@@ -102,8 +102,16 @@ if ($route === '' || $route === 'home') {
 } elseif ($route === 'api/track') {
     $controller = new \App\Controllers\TripController();
     $controller->apiTrackData();
+} elseif ($route === 'api/toggle_skipper') {
+    $controller = new \App\Controllers\TripController();
+    if ($method === 'POST') {
+        $controller->handleToggleSkipper();
+    } else {
+        http_response_code(405);
+        echo "Method Not Allowed";
+    }
 } elseif ($route === 'api/reveal_email') {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if ($method !== 'POST') {
         http_response_code(405);
         exit;
     }
