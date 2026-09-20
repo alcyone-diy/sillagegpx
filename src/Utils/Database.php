@@ -27,13 +27,24 @@ class Database {
     }
 
     /**
-     * Initializes the database if it doesn't exist and runs pending migrations
+     * Checks if the database is initialized (has core tables)
+     */
+    public static function isDatabaseInitialized(): bool {
+        if (!file_exists(DB_PATH)) {
+            return false;
+        }
+        $pdo = self::getConnection();
+        $stmt = $pdo->query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='trips'");
+        return ((int)$stmt->fetchColumn()) > 0;
+    }
+
+    /**
+     * Initializes the database if it's empty and runs pending migrations
      */
     public static function initIfNeeded(): void {
-        $isNewDb = !file_exists(DB_PATH);
         $pdo = self::getConnection();
         
-        if ($isNewDb && file_exists(SCHEMA_PATH)) {
+        if (!self::isDatabaseInitialized() && file_exists(SCHEMA_PATH)) {
             $schema = file_get_contents(SCHEMA_PATH);
             $pdo->exec($schema);
             self::markAllMigrationsAsApplied();
@@ -108,30 +119,25 @@ class Database {
             }
 
             $sql = file_get_contents($file);
-            if (!empty(trim($sql))) {
-                $statements = array_filter(array_map('trim', explode(';', $sql)));
-                foreach ($statements as $stmt) {
-                    if (empty($stmt)) {
-                        continue;
-                    }
-                    try {
-                        $pdo->exec($stmt);
-                    } catch (PDOException $e) {
-                        // Gracefully tolerate if a column or index already exists (e.g. manually added previously)
-                        $msg = strtolower($e->getMessage());
-                        if (str_contains($msg, 'duplicate column name') || str_contains($msg, 'already exists')) {
-                            if ($logger) {
-                                $logger("  (Note: Object already exists, skipping statement: {$stmt})");
-                            }
-                        } else {
-                            throw $e;
-                        }
-                    }
+
+            try {
+                $pdo->beginTransaction();
+
+                if (!empty(trim($sql))) {
+                    $pdo->exec($sql);
                 }
+
+                $insertStmt = $pdo->prepare('INSERT OR IGNORE INTO migrations (migration) VALUES (:migration)');
+                $insertStmt->execute(['migration' => $filename]);
+
+                $pdo->commit();
+            } catch (\Throwable $e) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+                throw $e;
             }
 
-            $insertStmt = $pdo->prepare('INSERT OR IGNORE INTO migrations (migration) VALUES (:migration)');
-            $insertStmt->execute(['migration' => $filename]);
             $applied[] = $filename;
 
             if ($logger) {

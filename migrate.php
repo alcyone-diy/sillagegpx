@@ -24,9 +24,9 @@ spl_autoload_register(function ($class) {
 
 echo "Checking database migrations...\n\n";
 
-// If database doesn't exist yet, initialize it
-if (!file_exists(DB_PATH)) {
-    echo "Database does not exist. Initializing fresh database from schema...\n";
+// If database is not initialized yet (missing or empty), initialize it
+if (!\App\Utils\Database::isDatabaseInitialized()) {
+    echo "Database is not initialized. Initializing fresh database from schema...\n";
     \App\Utils\Database::initIfNeeded();
     echo "[OK] Initialized a fresh database.\n";
     exit(0);

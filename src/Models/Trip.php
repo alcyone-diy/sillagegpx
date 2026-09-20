@@ -15,7 +15,7 @@ class Trip {
     public string $visibility; // 'public', 'unlisted', 'private'
     public ?string $unlisted_token;
     public int $views_count;
-    public bool|int $is_skipper = true;
+    public bool $is_skipper = true;
     public string $created_at;
     public string $updated_at;
 
@@ -62,7 +62,7 @@ class Trip {
             'comment' => $comment,
             'visibility' => $visibility,
             'unlisted_token' => $token,
-            'is_skipper' => $is_skipper ? 1 : 0
+            'is_skipper' => (int) $is_skipper
         ]);
         
         return self::findById((int)$pdo->lastInsertId());
@@ -79,7 +79,7 @@ class Trip {
             'comment' => $this->comment,
             'visibility' => $this->visibility,
             'unlisted_token' => $this->unlisted_token,
-            'is_skipper' => !empty($this->is_skipper) ? 1 : 0,
+            'is_skipper' => (int) $this->is_skipper,
             'id' => $this->id
         ]);
     }
