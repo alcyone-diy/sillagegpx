@@ -29,6 +29,7 @@ class TripController {
     public function showDashboard() {
         $userId = $this->requireAuth();
         $trips = Trip::findAllByUser($userId);
+        $stats = Trip::getUserStats($userId);
         require SRC_PATH . '/Views/dashboard.php';
     }
 

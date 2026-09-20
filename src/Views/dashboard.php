@@ -1,5 +1,6 @@
 <?php
 $pageTitle = __('dashboard') . ' - ' . __('site_title');
+$decPoint = ($_SESSION['lang'] ?? 'fr') === 'fr' ? ',' : '.';
 ob_start();
 ?>
 
@@ -16,6 +17,54 @@ ob_start();
         <a href="?route=create_trip" class="btn btn-primary mt-4"><?= __('log_first_trip') ?></a>
     </div>
 <?php else: ?>
+    <div class="dashboard-stats">
+        <div class="glass-card dashboard-stat-card">
+            <div class="dashboard-stat-icon">⛵</div>
+            <div class="dashboard-stat-info">
+                <div class="dashboard-stat-value">
+                    <?= number_format($stats['total_nm'] ?? 0, 1, $decPoint, ' ') ?>
+                    <span class="dashboard-stat-unit"><?= __('distance_unit') ?></span>
+                </div>
+                <div class="dashboard-stat-label"><?= __('total_distance') ?></div>
+                <div class="dashboard-stat-sub">
+                    <span><?= $stats['total_trips'] ?? 0 ?> <?= ($stats['total_trips'] ?? 0) > 1 ? __('navs_count') : __('nav_count') ?></span>
+                    <span class="stat-bullet">•</span>
+                    <span><?= $stats['total_days'] ?? 0 ?> <?= ($stats['total_days'] ?? 0) > 1 ? __('days_count') : __('day_count') ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card dashboard-stat-card">
+            <div class="dashboard-stat-icon">🧑‍✈️</div>
+            <div class="dashboard-stat-info">
+                <div class="dashboard-stat-value">
+                    <?= number_format($stats['skipper_nm'] ?? 0, 1, $decPoint, ' ') ?>
+                    <span class="dashboard-stat-unit"><?= __('distance_unit') ?></span>
+                </div>
+                <div class="dashboard-stat-label"><?= __('as_skipper') ?></div>
+                <div class="dashboard-stat-sub">
+                    <span><?= $stats['skipper_trips'] ?? 0 ?> <?= ($stats['skipper_trips'] ?? 0) > 1 ? __('navs_count') : __('nav_count') ?></span>
+                    <span class="stat-bullet">•</span>
+                    <span><?= $stats['skipper_days'] ?? 0 ?> <?= ($stats['skipper_days'] ?? 0) > 1 ? __('days_count') : __('day_count') ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card dashboard-stat-card">
+            <div class="dashboard-stat-icon">👥</div>
+            <div class="dashboard-stat-info">
+                <div class="dashboard-stat-value">
+                    <?= number_format($stats['crew_nm'] ?? 0, 1, $decPoint, ' ') ?>
+                    <span class="dashboard-stat-unit"><?= __('distance_unit') ?></span>
+                </div>
+                <div class="dashboard-stat-label"><?= __('as_crew') ?></div>
+                <div class="dashboard-stat-sub">
+                    <span><?= $stats['crew_trips'] ?? 0 ?> <?= ($stats['crew_trips'] ?? 0) > 1 ? __('navs_count') : __('nav_count') ?></span>
+                    <span class="stat-bullet">•</span>
+                    <span><?= $stats['crew_days'] ?? 0 ?> <?= ($stats['crew_days'] ?? 0) > 1 ? __('days_count') : __('day_count') ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="trips-grid">
         <?php foreach ($trips as $trip): ?>
             <a href="?route=trip&id=<?= $trip->id ?>" class="trip-card glass-card">
@@ -38,14 +87,7 @@ ob_start();
                         <p class="text-sm"><strong><?= __('date') ?>:</strong> <?= htmlspecialchars($trip->start_date) ?> 
                         <?php if ($trip->end_date && $trip->end_date != $trip->start_date) echo ' ' . __('to') . ' ' . htmlspecialchars($trip->end_date); ?>
                         </p>
-                        <?php
-                        $daysCount = 1;
-                        if ($trip->end_date) {
-                            $start = new DateTime($trip->start_date);
-                            $end = new DateTime($trip->end_date);
-                            $daysCount = $start->diff($end)->days + 1;
-                        }
-                        ?>
+                        <?php $daysCount = $trip->getDurationDays(); ?>
                         <p class="text-sm"><strong><?= __('duration') ?>:</strong> <?= $daysCount ?> <?= $daysCount > 1 ? __('days') : __('day') ?></p>
                     <?php endif; ?>
                     

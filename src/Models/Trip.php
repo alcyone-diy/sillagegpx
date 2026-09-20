@@ -23,6 +23,19 @@ class Trip {
         return (bool)$this->is_skipper;
     }
 
+    public function getDurationDays(): int {
+        if (!empty($this->start_date) && !empty($this->end_date)) {
+            try {
+                $start = new \DateTime($this->start_date);
+                $end = new \DateTime($this->end_date);
+                return max(1, $start->diff($end)->days + 1);
+            } catch (\Throwable) {
+                return 1;
+            }
+        }
+        return 1;
+    }
+
     public static function findAllByUser(int $user_id): array {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare('SELECT * FROM trips WHERE user_id = :user_id ORDER BY start_date DESC, created_at DESC');
@@ -102,5 +115,85 @@ class Trip {
         $stmt = $pdo->prepare('SELECT DISTINCT boat_name FROM trips WHERE user_id = :user_id AND boat_name IS NOT NULL AND boat_name != "" ORDER BY boat_name ASC');
         $stmt->execute(['user_id' => $user_id]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * Get aggregated sailing statistics for a user
+     *
+     * @param int $userId
+     * @return array{
+     *     total_nm: float,
+     *     skipper_nm: float,
+     *     crew_nm: float,
+     *     total_trips: int,
+     *     skipper_trips: int,
+     *     crew_trips: int,
+     *     total_days: int,
+     *     skipper_days: int,
+     *     crew_days: int
+     * }
+     */
+    public static function getUserStats(int $userId): array {
+        $pdo = Database::getConnection();
+
+        // 1. Distance aggregates from tracks
+        $stmtDist = $pdo->prepare('
+            SELECT 
+                COALESCE(SUM(g.distance_meters), 0) AS total_meters,
+                COALESCE(SUM(CASE WHEN t.is_skipper = 1 THEN g.distance_meters ELSE 0 END), 0) AS skipper_meters,
+                COALESCE(SUM(CASE WHEN t.is_skipper = 0 THEN g.distance_meters ELSE 0 END), 0) AS crew_meters
+            FROM trips t
+            JOIN trip_steps s ON s.trip_id = t.id
+            JOIN gpx_tracks g ON g.trip_step_id = s.id
+            WHERE t.user_id = :user_id
+        ');
+        $stmtDist->execute(['user_id' => $userId]);
+        $distRow = $stmtDist->fetch();
+
+        $nmConversion = 1852.0;
+
+        // 2. Trips and navigation days counts
+        $stmtTrips = $pdo->prepare('
+            SELECT 
+                is_skipper,
+                CAST(MAX(1, COALESCE(julianday(end_date) - julianday(start_date) + 1, 1)) AS INTEGER) AS duration_days
+            FROM trips 
+            WHERE user_id = :user_id
+        ');
+        $stmtTrips->execute(['user_id' => $userId]);
+        $trips = $stmtTrips->fetchAll();
+
+        $totalTrips = 0;
+        $skipperTrips = 0;
+        $crewTrips = 0;
+        $totalDays = 0;
+        $skipperDays = 0;
+        $crewDays = 0;
+
+        foreach ($trips as $t) {
+            $days = (int)($t['duration_days'] ?? 1);
+            $totalTrips++;
+            $totalDays += $days;
+
+            if (!empty($t['is_skipper'])) {
+                $skipperTrips++;
+                $skipperDays += $days;
+            } else {
+                $crewTrips++;
+                $crewDays += $days;
+            }
+        }
+
+        return [
+            'total_nm' => round(($distRow['total_meters'] ?? 0) / $nmConversion, 1),
+            'skipper_nm' => round(($distRow['skipper_meters'] ?? 0) / $nmConversion, 1),
+            'crew_nm' => round(($distRow['crew_meters'] ?? 0) / $nmConversion, 1),
+            'total_trips' => $totalTrips,
+            'skipper_trips' => $skipperTrips,
+            'crew_trips' => $crewTrips,
+            'total_days' => $totalDays,
+            'skipper_days' => $skipperDays,
+            'crew_days' => $crewDays,
+        ];
     }
 }

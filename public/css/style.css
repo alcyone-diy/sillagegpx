@@ -424,6 +424,77 @@ textarea.form-control {
   margin-bottom: 2rem;
 }
 
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.dashboard-stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.9rem 1.15rem;
+}
+
+.dashboard-stat-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: var(--accent-glow);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.dashboard-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dashboard-stat-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.dashboard-stat-unit {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-left: 0.2rem;
+}
+
+.dashboard-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-top: 0.15rem;
+}
+
+.dashboard-stat-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  white-space: nowrap;
+}
+
+.dashboard-stat-sub .stat-bullet {
+  opacity: 0.4;
+  font-size: 0.65rem;
+}
+
 .trips-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

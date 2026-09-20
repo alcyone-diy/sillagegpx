@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS trips (
 );
 
 CREATE INDEX IF NOT EXISTS idx_trips_is_skipper ON trips(is_skipper);
+CREATE INDEX IF NOT EXISTS idx_trips_user_id ON trips(user_id);
 
 CREATE TABLE IF NOT EXISTS trip_steps (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,6 +36,8 @@ CREATE TABLE IF NOT EXISTS trip_steps (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS idx_trip_steps_trip_id ON trip_steps(trip_id);
 
 CREATE TABLE IF NOT EXISTS trip_links (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,6 +62,8 @@ CREATE TABLE IF NOT EXISTS gpx_tracks (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (trip_step_id) REFERENCES trip_steps(id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS idx_gpx_tracks_step_id ON gpx_tracks(trip_step_id);
 
 CREATE TABLE IF NOT EXISTS login_attempts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -37,6 +37,13 @@ return [
     // Dashboard
     'your_logbook' => 'Your Logbook',
     'log_new_trip' => '+ Log New Trip',
+    'total_distance' => 'Total Distance',
+    'as_skipper' => 'As Skipper',
+    'as_crew' => 'As Crew',
+    'navs_count' => 'trips',
+    'nav_count' => 'trip',
+    'days_count' => 'days',
+    'day_count' => 'day',
     'no_trips' => 'No trips logged yet',
     'no_trips_desc' => 'Start recording your adventures on the water by creating your first trip and uploading a GPX file.',
     'log_first_trip' => 'Log your first trip',
