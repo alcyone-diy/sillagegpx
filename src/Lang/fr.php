@@ -44,6 +44,7 @@ return [
     'date' => 'Date',
     'views' => 'vues',
     'to' => 'au',
+    'crew_member' => 'Équipier',
     
     // Trip Form
     'edit_trip' => 'Modifier la Navigation',
@@ -52,7 +53,6 @@ return [
     'trip_title' => 'Titre de la Navigation',
     'boat_name' => 'Nom du Bateau',
     'is_skipper' => 'Chef de bord',
-    'is_skipper_desc' => 'Cochez si vous étiez chef de bord pour cette navigation',
     'captains_log' => 'Livre de Bord',
     'tracks_gpx' => 'Traces (GPX)',
     'existing_tracks' => 'Traces Existantes :',

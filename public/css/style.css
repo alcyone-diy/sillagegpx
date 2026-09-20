@@ -466,6 +466,8 @@ textarea.form-control {
 .badge-public { background: #d1fae5; color: #065f46; }
 .badge-private { background: #fee2e2; color: #991b1b; }
 .badge-unlisted { background: #fef3c7; color: #92400e; }
+.badge-skipper { background: #e0e7ff; color: #3730a3; }
+.badge-crew { background: #f3f4f6; color: #4b5563; }
 
 .empty-state {
   text-align: center;

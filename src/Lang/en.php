@@ -44,6 +44,7 @@ return [
     'date' => 'Date',
     'views' => 'views',
     'to' => 'to',
+    'crew_member' => 'Crew',
     
     // Trip Form
     'edit_trip' => 'Edit Trip',
@@ -52,7 +53,6 @@ return [
     'trip_title' => 'Trip Title',
     'boat_name' => 'Boat Name',
     'is_skipper' => 'Skipper',
-    'is_skipper_desc' => 'Check if you were the skipper for this trip',
     'captains_log' => 'Captain\'s Log',
     'tracks_gpx' => 'Tracks (GPX)',
     'existing_tracks' => 'Existing Tracks:',

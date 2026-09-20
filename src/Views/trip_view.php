@@ -15,10 +15,7 @@ ob_start();
                 <span>📅 <?= htmlspecialchars($trip->start_date) ?></span> &bull; 
             <?php endif; ?>
             <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span> &bull;
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; user-select: none;">
-                <input type="checkbox" id="skipperCheckbox" <?= $trip->isSkipper() ? 'checked' : '' ?> disabled style="width: 1rem; height: 1rem; accent-color: var(--accent-primary); cursor: default;">
-                <span>🧑‍✈️ <?= __('is_skipper') ?></span>
-            </label>
+            <span><?= $trip->isSkipper() ? '🧑‍✈️ ' . __('is_skipper') : '👥 ' . __('crew_member') ?></span>
         </div>
         
         <?php if ($trip->comment): ?>

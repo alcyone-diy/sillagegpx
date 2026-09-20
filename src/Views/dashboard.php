@@ -21,7 +21,12 @@ ob_start();
             <div class="trip-card glass-card" onclick="window.location.href='?route=trip&id=<?= $trip->id ?>'" style="cursor: pointer;">
                 <div class="trip-card-header">
                     <h3 style="margin-bottom: 0; color: var(--accent-primary);"><?= htmlspecialchars($trip->title) ?></h3>
-                    <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars(__($trip->visibility)) ?></span>
+                    <div class="d-flex align-items-center" style="gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end;">
+                        <span class="badge <?= $trip->isSkipper() ? 'badge-skipper' : 'badge-crew' ?>">
+                            <?= $trip->isSkipper() ? '🧑‍✈️ ' . __('is_skipper') : '👥 ' . __('crew_member') ?>
+                        </span>
+                        <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars(__($trip->visibility)) ?></span>
+                    </div>
                 </div>
                 
                 <div class="trip-card-body" style="margin-top: 1rem;">
