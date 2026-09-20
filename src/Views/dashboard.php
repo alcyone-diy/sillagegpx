@@ -18,7 +18,7 @@ ob_start();
 <?php else: ?>
     <div class="trips-grid">
         <?php foreach ($trips as $trip): ?>
-            <div class="trip-card glass-card" onclick="window.location.href='?route=trip&id=<?= $trip->id ?>'" style="cursor: pointer;">
+            <a href="?route=trip&id=<?= $trip->id ?>" class="trip-card glass-card">
                 <div class="trip-card-header">
                     <h3 style="margin-bottom: 0; color: var(--accent-primary);"><?= htmlspecialchars($trip->title) ?></h3>
                     <div class="d-flex align-items-center" style="gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end;">
@@ -53,7 +53,7 @@ ob_start();
                         <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span>
                     </div>
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
