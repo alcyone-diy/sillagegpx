@@ -33,6 +33,7 @@ return [
     'invalid_credentials' => 'Nom d\'utilisateur ou mot de passe invalide.',
     'fields_required' => 'Tous les champs sont requis.',
     'user_exists' => 'Le nom d\'utilisateur ou l\'email existe déjà.',
+    'last_login' => 'Dernière connexion',
     
     // Dashboard
     'your_logbook' => 'Votre Journal de Bord',

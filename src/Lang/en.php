@@ -33,6 +33,7 @@ return [
     'invalid_credentials' => 'Invalid username or password.',
     'fields_required' => 'All fields are required.',
     'user_exists' => 'Username or email already exists.',
+    'last_login' => 'Last login',
     
     // Dashboard
     'your_logbook' => 'Your Logbook',

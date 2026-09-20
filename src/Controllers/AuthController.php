@@ -38,6 +38,8 @@ class AuthController {
             $stmt = $pdo->prepare("DELETE FROM login_attempts WHERE ip_address = ?");
             $stmt->execute([$ip]);
 
+            User::updateLastLogin($user->id);
+
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user->id;
             $_SESSION['username'] = $user->username;

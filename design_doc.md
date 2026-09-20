@@ -18,6 +18,7 @@ From the design phase, the application is intended to be multi-user and finely m
 *   `username` (VARCHAR, Unique)
 *   `email` (VARCHAR, Unique)
 *   `password_hash` (VARCHAR)
+*   `last_login_at` (DATETIME, Nullable) - Date and time of last login / activity.
 *   `created_at` (DATETIME)
 
 ### `trips` Table

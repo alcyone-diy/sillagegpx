@@ -39,6 +39,7 @@ class AdminController {
                 u.username, 
                 u.email, 
                 u.created_at,
+                u.last_login_at,
                 (SELECT COUNT(*) FROM trips t WHERE t.user_id = u.id) as trips_count,
                 (SELECT COUNT(gt.id) 
                  FROM trips t 

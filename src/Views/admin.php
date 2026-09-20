@@ -52,6 +52,7 @@ ob_start();
                 <th style="padding: 1rem;">Nom d'utilisateur</th>
                 <th style="padding: 1rem;">Email</th>
                 <th style="padding: 1rem;">Inscription</th>
+                <th style="padding: 1rem;">Dernière connexion</th>
                 <th style="padding: 1rem; text-align: center;">Navigations</th>
                 <th style="padding: 1rem; text-align: center;">Traces</th>
             </tr>
@@ -68,6 +69,9 @@ ob_start();
                 </td>
                 <td style="padding: 1rem; color: var(--text-muted);"><?= htmlspecialchars($user['email']) ?></td>
                 <td style="padding: 1rem; color: var(--text-muted);"><?= htmlspecialchars(date('d/m/Y', strtotime($user['created_at']))) ?></td>
+                <td style="padding: 1rem; color: var(--text-muted);">
+                    <?= !empty($user['last_login_at']) ? htmlspecialchars(date('d/m/Y H:i', strtotime($user['last_login_at']))) : '<span style="opacity: 0.5;">—</span>' ?>
+                </td>
                 <td style="padding: 1rem; text-align: center;">
                     <span class="badge badge-success"><?= htmlspecialchars($user['trips_count']) ?></span>
                 </td>

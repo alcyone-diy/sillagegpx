@@ -34,6 +34,8 @@ class ApiAuth {
                     $updateStmt = $pdo->prepare("UPDATE api_tokens SET last_used_at = CURRENT_TIMESTAMP WHERE id = ?");
                     $updateStmt->execute([$tokenData->id]);
 
+                    \App\Models\User::updateLastLogin((int)$tokenData->user_id);
+
                     return (int)$tokenData->user_id;
                 }
             } catch (\Exception $e) {

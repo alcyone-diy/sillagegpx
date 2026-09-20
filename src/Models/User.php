@@ -9,6 +9,7 @@ class User {
     public string $username;
     public string $email;
     public string $password_hash;
+    public ?string $last_login_at = null;
     public string $created_at;
 
     public static function findByUsername(string $username): ?User {
@@ -41,7 +42,7 @@ class User {
         $pdo = Database::getConnection();
         $hash = password_hash($password, PASSWORD_DEFAULT);
         
-        $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password_hash)');
+        $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash, last_login_at) VALUES (:username, :email, :password_hash, CURRENT_TIMESTAMP)');
         try {
             $stmt->execute([
                 'username' => $username,
@@ -52,6 +53,16 @@ class User {
         } catch (\PDOException $e) {
             // Probably unique constraint violation
             return null;
+        }
+    }
+
+    public static function updateLastLogin(int $userId): bool {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare('UPDATE users SET last_login_at = CURRENT_TIMESTAMP WHERE id = :id');
+        try {
+            return $stmt->execute(['id' => $userId]);
+        } catch (\PDOException $e) {
+            return false;
         }
     }
 
