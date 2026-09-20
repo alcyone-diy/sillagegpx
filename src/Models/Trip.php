@@ -15,8 +15,13 @@ class Trip {
     public string $visibility; // 'public', 'unlisted', 'private'
     public ?string $unlisted_token;
     public int $views_count;
+    public bool|int $is_skipper = true;
     public string $created_at;
     public string $updated_at;
+
+    public function isSkipper(): bool {
+        return (bool)$this->is_skipper;
+    }
 
     public static function findAllByUser(int $user_id): array {
         $pdo = Database::getConnection();
@@ -43,11 +48,11 @@ class Trip {
         return $trip ?: null;
     }
 
-    public static function create(int $user_id, string $title, ?string $start_date, ?string $end_date, ?string $boat_name, ?string $comment, string $visibility = 'private'): ?Trip {
+    public static function create(int $user_id, string $title, ?string $start_date, ?string $end_date, ?string $boat_name, ?string $comment, string $visibility = 'private', bool $is_skipper = true): ?Trip {
         $pdo = Database::getConnection();
         $token = ($visibility === 'unlisted') ? bin2hex(random_bytes(16)) : null;
         
-        $stmt = $pdo->prepare('INSERT INTO trips (user_id, title, start_date, end_date, boat_name, comment, visibility, unlisted_token) VALUES (:user_id, :title, :start_date, :end_date, :boat_name, :comment, :visibility, :unlisted_token)');
+        $stmt = $pdo->prepare('INSERT INTO trips (user_id, title, start_date, end_date, boat_name, comment, visibility, unlisted_token, is_skipper) VALUES (:user_id, :title, :start_date, :end_date, :boat_name, :comment, :visibility, :unlisted_token, :is_skipper)');
         $stmt->execute([
             'user_id' => $user_id,
             'title' => $title,
@@ -56,7 +61,8 @@ class Trip {
             'boat_name' => $boat_name,
             'comment' => $comment,
             'visibility' => $visibility,
-            'unlisted_token' => $token
+            'unlisted_token' => $token,
+            'is_skipper' => $is_skipper ? 1 : 0
         ]);
         
         return self::findById((int)$pdo->lastInsertId());
@@ -64,7 +70,7 @@ class Trip {
 
     public function update(): void {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare('UPDATE trips SET title = :title, start_date = :start_date, end_date = :end_date, boat_name = :boat_name, comment = :comment, visibility = :visibility, unlisted_token = :unlisted_token, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt = $pdo->prepare('UPDATE trips SET title = :title, start_date = :start_date, end_date = :end_date, boat_name = :boat_name, comment = :comment, visibility = :visibility, unlisted_token = :unlisted_token, is_skipper = :is_skipper, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
         $stmt->execute([
             'title' => $this->title,
             'start_date' => $this->start_date,
@@ -73,6 +79,7 @@ class Trip {
             'comment' => $this->comment,
             'visibility' => $this->visibility,
             'unlisted_token' => $this->unlisted_token,
+            'is_skipper' => !empty($this->is_skipper) ? 1 : 0,
             'id' => $this->id
         ]);
     }
