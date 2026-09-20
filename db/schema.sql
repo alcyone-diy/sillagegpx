@@ -19,10 +19,13 @@ CREATE TABLE IF NOT EXISTS trips (
     visibility VARCHAR(20) DEFAULT 'private', -- 'public', 'unlisted', 'private'
     unlisted_token VARCHAR(255) UNIQUE,
     views_count INTEGER DEFAULT 0,
+    is_skipper BOOLEAN DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_trips_is_skipper ON trips(is_skipper);
 
 CREATE TABLE IF NOT EXISTS trip_steps (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,4 +87,10 @@ CREATE TABLE IF NOT EXISTS api_tokens (
     last_used_at DATETIME DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS migrations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    migration VARCHAR(255) NOT NULL UNIQUE,
+    applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

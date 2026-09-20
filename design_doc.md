@@ -31,6 +31,7 @@ From the design phase, the application is intended to be multi-user and finely m
 *   `visibility` (ENUM: 'public', 'unlisted', 'private') - Default: 'private'
 *   `unlisted_token` (VARCHAR, Unique, Nullable) - Random token used for unlisted URLs.
 *   `views_count` (INT) - Visit counter (useful for the owner). Default: 0.
+*   `is_skipper` (BOOLEAN) - Flag indicating if the user was skipper / chef de bord (Indexed). Default: 1 (true).
 *   `created_at` (DATETIME)
 *   `updated_at` (DATETIME)
 
@@ -72,6 +73,11 @@ From the design phase, the application is intended to be multi-user and finely m
 *   `user_handle` (TEXT)
 *   `sign_count` (INT)
 *   `created_at` (DATETIME)
+
+### `migrations` Table (Schema versioning)
+*   `id` (PK, INT, Auto-increment)
+*   `migration` (VARCHAR, Unique) - Migration script filename
+*   `applied_at` (DATETIME)
 
 ## 4. Processing Logic and Features
 

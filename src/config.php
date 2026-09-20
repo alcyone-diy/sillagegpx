@@ -15,6 +15,7 @@ define('GPX_PATH', DATA_PATH . '/trips');
 // Database
 define('DB_PATH', BASE_PATH . '/db/journal.sqlite');
 define('SCHEMA_PATH', BASE_PATH . '/db/schema.sql');
+define('MIGRATIONS_PATH', BASE_PATH . '/db/migrations');
 
 // Session Configuration
 define('SESSION_LIFETIME', 30 * 24 * 60 * 60); // 30 days in seconds

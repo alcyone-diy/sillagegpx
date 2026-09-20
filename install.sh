@@ -36,7 +36,10 @@ if [ ! -f "db/journal.sqlite" ]; then
         echo "Please create the database manually from db/schema.sql"
     fi
 else
-    echo "ℹ️ Database already exists. No action required."
+    echo "ℹ️ Database already exists. Running pending migrations..."
+    if command -v php &> /dev/null; then
+        php migrate.php
+    fi
     chmod 666 db/journal.sqlite
 fi
 
