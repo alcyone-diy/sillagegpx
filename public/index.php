@@ -102,14 +102,6 @@ if ($route === '' || $route === 'home') {
 } elseif ($route === 'api/track') {
     $controller = new \App\Controllers\TripController();
     $controller->apiTrackData();
-} elseif ($route === 'api/toggle_skipper') {
-    $controller = new \App\Controllers\TripController();
-    if ($method === 'POST') {
-        $controller->handleToggleSkipper();
-    } else {
-        http_response_code(405);
-        echo "Method Not Allowed";
-    }
 } elseif ($route === 'api/reveal_email') {
     if ($method !== 'POST') {
         http_response_code(405);

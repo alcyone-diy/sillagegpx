@@ -15,13 +15,10 @@ ob_start();
                 <span>📅 <?= htmlspecialchars($trip->start_date) ?></span> &bull; 
             <?php endif; ?>
             <span>👁️ <?= $trip->views_count ?> <?= __('views') ?></span> &bull;
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; cursor: <?= $isOwner ? 'pointer' : 'default' ?>; user-select: none;" title="<?= $isOwner ? 'Cliquer pour modifier le statut chef de bord' : '' ?>">
-                <input type="checkbox" id="skipperCheckbox" <?= $trip->isSkipper() ? 'checked' : '' ?> <?= $isOwner ? '' : 'disabled' ?> style="width: 1rem; height: 1rem; accent-color: var(--accent-primary); cursor: <?= $isOwner ? 'pointer' : 'default' ?>;" <?= $isOwner ? 'onchange="toggleSkipperStatus(this.checked)"' : '' ?>>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; user-select: none;">
+                <input type="checkbox" id="skipperCheckbox" <?= $trip->isSkipper() ? 'checked' : '' ?> disabled style="width: 1rem; height: 1rem; accent-color: var(--accent-primary); cursor: default;">
                 <span>🧑‍✈️ <?= __('is_skipper') ?></span>
             </label>
-            <?php if ($isOwner): ?>
-                <span id="skipperFeedback" style="display: none; font-size: 0.85rem; color: #28a745; font-weight: bold;">✓</span>
-            <?php endif; ?>
         </div>
         
         <?php if ($trip->comment): ?>
@@ -44,7 +41,7 @@ ob_start();
         <?php endif; ?>
     </div>
     
-    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $trip->user_id): ?>
+    <?php if ($isOwner): ?>
         <div class="trip-owner-actions">
             <div class="d-flex" style="gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
                 <span class="badge badge-<?= htmlspecialchars($trip->visibility) ?>"><?= htmlspecialchars(__($trip->visibility)) ?></span>
@@ -181,31 +178,6 @@ function regenerateToken(tripId) {
         }
     })
     .catch(err => alert(<?= json_encode(__('network_error')) ?>));
-}
-
-function toggleSkipperStatus(isChecked) {
-    const feedback = document.getElementById('skipperFeedback');
-    fetch('?route=api/toggle_skipper', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trip_id: <?= (int)$trip->id ?>, is_skipper: isChecked ? 1 : 0 })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            if (feedback) {
-                feedback.style.display = 'inline';
-                setTimeout(() => { feedback.style.display = 'none'; }, 2000);
-            }
-        } else {
-            alert(data.error || 'Update failed');
-            document.getElementById('skipperCheckbox').checked = !isChecked;
-        }
-    })
-    .catch(err => {
-        alert(<?= json_encode(__('network_error')) ?>);
-        document.getElementById('skipperCheckbox').checked = !isChecked;
-    });
 }
 </script>
 <script src="js/map.js"></script>

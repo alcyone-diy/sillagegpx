@@ -420,25 +420,4 @@ class TripController {
         echo json_encode(['error' => 'Not found']);
         exit;
     }
-
-    public function handleToggleSkipper() {
-        $userId = $this->requireAuth();
-        
-        $data = json_decode(file_get_contents('php://input'), true);
-        $tripId = (int)($data['trip_id'] ?? 0);
-        $isSkipper = !empty($data['is_skipper']);
-        
-        $trip = Trip::findById($tripId);
-        if (!$trip || $trip->user_id !== $userId) {
-            http_response_code(403);
-            die(json_encode(['error' => 'Access denied']));
-        }
-        
-        $trip->is_skipper = $isSkipper;
-        $trip->update();
-        
-        header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'is_skipper' => $trip->isSkipper()]);
-        exit;
-    }
 }
