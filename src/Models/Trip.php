@@ -18,6 +18,7 @@ class Trip {
     public bool $is_skipper = true;
     public string $created_at;
     public string $updated_at;
+    public float $total_distance_meters = 0.0;
 
     public function isSkipper(): bool {
         return (bool)$this->is_skipper;
@@ -36,9 +37,23 @@ class Trip {
         return 1;
     }
 
+    public function getTotalDistanceNm(): float {
+        return round($this->total_distance_meters / 1852.0, 1);
+    }
+
     public static function findAllByUser(int $user_id): array {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare('SELECT * FROM trips WHERE user_id = :user_id ORDER BY start_date DESC, created_at DESC');
+        $stmt = $pdo->prepare('
+            SELECT 
+                t.*,
+                COALESCE(SUM(g.distance_meters), 0) AS total_distance_meters
+            FROM trips t
+            LEFT JOIN trip_steps s ON s.trip_id = t.id
+            LEFT JOIN gpx_tracks g ON g.trip_step_id = s.id
+            WHERE t.user_id = :user_id
+            GROUP BY t.id
+            ORDER BY t.start_date DESC, t.created_at DESC
+        ');
         $stmt->execute(['user_id' => $user_id]);
         return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
     }
@@ -106,7 +121,17 @@ class Trip {
 
     public static function getAllPublicOrUnlisted() {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM trips WHERE visibility IN ('public', 'unlisted') ORDER BY start_date DESC");
+        $stmt = $pdo->query("
+            SELECT 
+                t.*,
+                COALESCE(SUM(g.distance_meters), 0) AS total_distance_meters
+            FROM trips t
+            LEFT JOIN trip_steps s ON s.trip_id = t.id
+            LEFT JOIN gpx_tracks g ON g.trip_step_id = s.id
+            WHERE t.visibility IN ('public', 'unlisted')
+            GROUP BY t.id
+            ORDER BY t.start_date DESC, t.created_at DESC
+        ");
         return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 

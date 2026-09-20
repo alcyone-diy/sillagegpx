@@ -53,6 +53,9 @@ return [
     'views' => 'vues',
     'to' => 'au',
     'crew_member' => 'Équipier',
+    'tracks' => 'Traces',
+    'track' => 'Trace',
+    'total' => 'Total',
     
     // Trip Form
     'edit_trip' => 'Modifier la Navigation',

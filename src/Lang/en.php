@@ -53,6 +53,9 @@ return [
     'views' => 'views',
     'to' => 'to',
     'crew_member' => 'Crew',
+    'tracks' => 'Tracks',
+    'track' => 'Track',
+    'total' => 'Total',
     
     // Trip Form
     'edit_trip' => 'Edit Trip',
