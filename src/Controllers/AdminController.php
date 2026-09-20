@@ -53,4 +53,33 @@ class AdminController {
 
         require SRC_PATH . '/Views/admin.php';
     }
+
+    public function recalculateTracks() {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            exit;
+        }
+
+        // Only user #1 is admin
+        if ((int)$_SESSION['user_id'] !== 1) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Forbidden: Admin access only.']);
+            exit;
+        }
+
+        // Prevent timeout for large track sets
+        @set_time_limit(0);
+        @ignore_user_abort(true);
+
+        $result = \App\Utils\TrackRecalculator::recalculateAll();
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => "{$result['success']} trace(s) recalculée(s) avec succès sur {$result['total']}.",
+            'details' => $result
+        ]);
+        exit;
+    }
 }

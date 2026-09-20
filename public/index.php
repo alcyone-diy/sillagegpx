@@ -211,6 +211,15 @@ if ($route === '' || $route === 'home') {
 } elseif ($route === 'admin') {
     $controller = new \App\Controllers\AdminController();
     $controller->showAdmin();
+} elseif ($route === 'api/admin/recalculate_tracks') {
+    if ($method === 'POST') {
+        $controller = new \App\Controllers\AdminController();
+        $controller->recalculateTracks();
+    } else {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method Not Allowed']);
+    }
+    exit;
 } elseif ($route === 'about') {
     require SRC_PATH . '/Views/about.php';
 } else {
